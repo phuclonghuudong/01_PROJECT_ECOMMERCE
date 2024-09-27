@@ -1,0 +1,18 @@
+{
+  "name": "ecommerce",
+  "version": "1.0.0",
+  "description": "Template này của tác giả PHP-PHUC",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client-install": "cd client && npm install",
+    "server-install": "cd server && npm install",
+    "install": "concurrently \"npm run client-install\" \"npm run server-install\"",
+    "client": "cd client && npm run dev",
+    "server": "cd server && npm run dev",
+    "start": "concurrently \"npm run client\" \"npm run server\""
+  },
+  "dependencies": {
+    "concurrently": "9.0.1"
+  }
+}

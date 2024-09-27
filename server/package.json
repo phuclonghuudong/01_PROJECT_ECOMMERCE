@@ -1,0 +1,32 @@
+{
+  "name": "phuc-molxipi",
+  "version": "1.0.0",
+  "description": "Backend Nodejs ExpressJs MongooDB JWT",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./src/server.js",
+    "start": "nodemon ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phuclonghuudong/01_PROJECT_ECOMMERCE.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phuclonghuudong/01_PROJECT_ECOMMERCE/issues"
+  },
+  "homepage": "https://github.com/phuclonghuudong/01_PROJECT_ECOMMERCE#readme",
+  "dependencies": {
+    "bcryptjs": "2.4.3",
+    "body-parser": "1.20.3",
+    "cookie-parser": "1.4.6",
+    "cors": "2.8.5",
+    "dotenv": "16.4.5",
+    "express": "4.21.0",
+    "jsonwebtoken": "9.0.2",
+    "mongoose": "8.6.4",
+    "nodemon": "3.1.7"
+  }
+}
