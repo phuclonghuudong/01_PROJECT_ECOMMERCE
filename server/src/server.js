@@ -9,6 +9,7 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const port = process.env.PORT || 8081;
 const client = process.env.REACT_URL;
+
 const corsOptions = {
   origin: client, // Change to your frontend's URL
   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
@@ -33,7 +34,6 @@ routerAPI(app);
 
 (async () => {
   try {
-    //using mongoose
     await connection();
 
     app.listen(port, () => {

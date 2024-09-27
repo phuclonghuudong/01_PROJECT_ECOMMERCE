@@ -8,4 +8,6 @@ Các bước cài đặt: (chế độ development)
 4. Chạy dự án: npm start
 
 ### Xây dựng dự án
+
 1. Khởi tạo project, xây dựng khung dự án.
+2. SetUp Project && test run dev.
