@@ -1,12 +1,12 @@
 import React from "react";
 import TitlePageComponent from "../../../components/TitlePageComponent";
 
-const ContactPage = () => {
+const IntrodutionPage = () => {
   return (
     <div>
-      <TitlePageComponent pageName={"Liên hệ"} pagePath={"/lien-he"} />
+      <TitlePageComponent pageName={"Giới thiệu"} pagePath={"/gioi-thieu"} />
     </div>
   );
 };
 
-export default ContactPage;
+export default IntrodutionPage;
