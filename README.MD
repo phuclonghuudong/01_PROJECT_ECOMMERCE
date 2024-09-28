@@ -12,3 +12,4 @@ Các bước cài đặt: (chế độ development)
 1. Khởi tạo project, xây dựng khung dự án.
 2. SetUp Project && test run dev.
 3. Design Client Page.
+  3. Design Page Product, Product Detail, Login, Register.

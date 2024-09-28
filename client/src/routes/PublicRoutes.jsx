@@ -15,6 +15,7 @@ const AccountPage = React.lazy(() => import("../pages/users/AccountPage"));
 const CheckOrderPage = React.lazy(() => import("../pages/users/CheckOrderPage"));
 const CheckWarrantyPage = React.lazy(() => import("../pages/users/CheckWarrantyPage"));
 const CartPage = React.lazy(() => import("../pages/users/CartPage"));
+const ProductDetail = React.lazy(() => import("../pages/users/ProductDetail"));
 const NotFound = React.lazy(() => import("../pages/users/NotFound"));
 
 const PublicRoutes = [
@@ -29,6 +30,10 @@ const PublicRoutes = [
       {
         path: "/san-pham",
         element: <LoadLazy children={<ProductPage />} />,
+      },
+      {
+        path: "/san-pham/chi-tiet-san-pham",
+        element: <LoadLazy children={<ProductDetail />} />,
       },
       {
         path: "/lien-he",
