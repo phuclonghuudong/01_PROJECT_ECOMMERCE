@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Col, Form, Row } from "antd";
 import TitlePageModule from "../../../components/TitlePageModule";
 import LabelInput from "../../../components/LabelInput";
+import { NavLink } from "react-router-dom";
 
 const onFinish = (values) => {
   console.log("Success:", values);
@@ -14,6 +15,14 @@ const LoginUser = () => {
     <Row style={{ display: "flex", justifyContent: "center", margin: "30px 0" }}>
       <Col xs={24} sm={24} md={12} lg={12} xl={12}>
         <TitlePageModule title={"Đăng nhập"} />
+        <div align="right">
+          <NavLink className={"navlink"} to={"/dang-ky"} style={{ paddingRight: "4px" }}>
+            <span>Quên mật khẩu</span>
+          </NavLink>
+          <NavLink className={"navlink"} to={"/dang-ky"}>
+            <span>Đăng ký tại đây</span>
+          </NavLink>
+        </div>
         <div style={{ margin: "10px" }}>
           <Form
             name="basic"

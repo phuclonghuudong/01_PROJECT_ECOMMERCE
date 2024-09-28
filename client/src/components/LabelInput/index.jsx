@@ -1,7 +1,7 @@
 import { Form, Input } from "antd";
 import React from "react";
 
-const LabelInput = ({ label, name, message, typePassword, placeholder }) => {
+const LabelInput = ({ label, name, message, typePassword, placeholder, disabled }) => {
   return (
     <Form.Item
       label={label}
@@ -16,7 +16,7 @@ const LabelInput = ({ label, name, message, typePassword, placeholder }) => {
       {typePassword ? (
         <Input.Password className="input-form" placeholder={placeholder} />
       ) : (
-        <Input className="input-form" placeholder={placeholder} />
+        <Input className="input-form" placeholder={placeholder} disabled={!disabled ? false : true} />
       )}
     </Form.Item>
   );

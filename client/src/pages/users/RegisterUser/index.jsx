@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Col, Form, Row } from "antd";
 import TitlePageModule from "../../../components/TitlePageModule";
 import LabelInput from "../../../components/LabelInput";
+import { NavLink } from "react-router-dom";
 
 const onFinish = (values) => {
   console.log("Success:", values);
@@ -15,6 +16,11 @@ const RegisterUser = () => {
     <Row style={{ display: "flex", justifyContent: "center", margin: "30px 0" }}>
       <Col xs={24} sm={24} md={12} lg={12} xl={12}>
         <TitlePageModule title={"Đăng ký"} />
+        <div align="center">
+          <NavLink className={"navlink"} to={"/dang-nhap"}>
+            <span>Đã có tài khoản, tiến hành đăng nhập</span>
+          </NavLink>
+        </div>
         <div style={{ margin: "10px" }}>
           <Form
             name="basic"
