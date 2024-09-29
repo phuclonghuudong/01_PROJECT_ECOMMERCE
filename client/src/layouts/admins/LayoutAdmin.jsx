@@ -141,7 +141,7 @@ const LayoutAdmin = () => {
                 theme="dark"
                 inlineCollapsed={collapsed}
                 items={items}
-                style={{ display: "flex", flexFlow: "column" }}
+                style={{ display: "flex", flexFlow: "column", height: "100vh" }}
               />
             </Col>
           ) : (
@@ -159,7 +159,7 @@ const LayoutAdmin = () => {
             theme="dark"
             inlineCollapsed={collapsed}
             items={items}
-            style={{ display: "flex", flexFlow: "column", height: "585px" }}
+            style={{ display: "flex", flexFlow: "column", height: "100vh" }}
           />
         </Col>
         <Col xs={24} sm={24} md={!collapsed ? 18 : 21} lg={!collapsed ? 20 : 22} xl={!collapsed ? 20 : 22}>
