@@ -1,5 +1,5 @@
-const { ACCESS_TOKEN, REFRESH_TOKEN } = require("../middleware/JWTToken");
-const User = require("../models/UserModel");
+const { ACCESS_TOKEN, REFRESH_TOKEN, VERIFY_TOKEN } = require("../middleware/JWTToken");
+const User = require("../models/user.model");
 const { comparePassword, hashPassword } = require("../utils/isValidInput");
 
 const loginUser = async (data) => {

@@ -1,4 +1,4 @@
-const UserServices = require("../services/UserService");
+const UserServices = require("../services/user.service");
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -16,7 +16,7 @@ const loginUser = async (req, res) => {
 
     res.cookie("refresh_token", REFRESH_TOKEN, {
       httpOnly: true,
-      secure: false, //changes secure
+      secure: false,
       sameSite: "strict",
       maxAge: 24 * 60 * 60 * 1000,
     });
@@ -73,13 +73,13 @@ const logoutUser = async (req, res) => {
 };
 const refreshToken = async (req, res) => {
   try {
-    const result = await UserService.refreshTokenUser(req.cookies);
+    const result = await UserServices.refreshToken(req.cookies);
 
     const { REFRESH_TOKEN, ...newResult } = result?.DT;
 
     res.cookie("refresh_token", REFRESH_TOKEN, {
       httpOnly: true,
-      secure: false, //changes secure
+      secure: false,
       sameSite: "strict",
       maxAge: 24 * 60 * 60 * 1000,
     });

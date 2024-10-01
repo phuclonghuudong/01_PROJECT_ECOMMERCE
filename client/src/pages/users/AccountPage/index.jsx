@@ -4,6 +4,7 @@ import { Row } from "antd";
 import { PiPhoneCallFill } from "react-icons/pi";
 import { FaUserAlt, FaMailchimp, FaMapMarkerAlt } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const columns = [
   {
@@ -38,12 +39,14 @@ const data = [
   },
 ];
 const AccountPage = () => {
+  const auth = useSelector((state) => state.auth.login);
+
   return (
     <div style={{ margin: "10px 10px 30px 10px" }}>
       <Row style={{ display: "grid" }}>
         <div className="title-page-account">Thông tin tài khoản</div>
         <span style={{ fontStyle: "italic", display: "flex" }}>
-          Xin chào, <span className="title-page-account-color"> Guest</span>{" "}
+          Xin chào, <span className="title-page-account-color"> {auth?.USER?.username}</span>{" "}
         </span>
       </Row>
 
@@ -55,14 +58,14 @@ const AccountPage = () => {
               <FaUserAlt />
             </span>
             <div className="span-content-account">Họ tên:</div>
-            <div className="p-content-account">Admin</div>
+            <div className="p-content-account">{auth?.USER?.username}</div>
           </div>
           <div className="div-content-account">
             <span className="title-page-account-color">
               <FaMailchimp />
             </span>
             <div className="span-content-account">Email:</div>
-            <div className="p-content-account">Admin</div>
+            <div className="p-content-account">{auth?.USER?.email}</div>
           </div>
 
           <div className="div-content-account">
@@ -70,7 +73,7 @@ const AccountPage = () => {
               <PiPhoneCallFill />
             </span>
             <div className="span-content-account">Số ĐT:</div>
-            <div className="p-content-account"> Admin</div>
+            <div className="p-content-account"> {auth?.USER?.phone}</div>
           </div>
 
           <div className="div-content-account">
@@ -78,7 +81,7 @@ const AccountPage = () => {
               <FaMapMarkerAlt />
             </span>
             <div className="span-content-account">Địa chỉ:</div>
-            <div className="p-content-account">Admin</div>
+            <div className="p-content-account">{auth?.USER?.address}</div>
           </div>
 
           <div>

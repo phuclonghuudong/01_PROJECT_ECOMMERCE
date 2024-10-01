@@ -1,5 +1,5 @@
-const routerUser = require("./userRouter");
-const routerProduct = require("./productRouter");
+const routerUser = require("./user.router");
+const routerProduct = require("./product.router");
 
 const routerAPI = (app) => {
   app.use("/v1/api/user", routerUser);

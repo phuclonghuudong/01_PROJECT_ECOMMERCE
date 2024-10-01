@@ -16,7 +16,12 @@ const LabelInput = ({ label, name, message, typePassword, placeholder, disabled 
       {typePassword ? (
         <Input.Password className="input-form" placeholder={placeholder} />
       ) : (
-        <Input className="input-form" placeholder={placeholder} disabled={!disabled ? false : true} />
+        <Input
+          className="input-form"
+          placeholder={placeholder}
+          disabled={!disabled ? false : true}
+          autoComplete="off"
+        />
       )}
     </Form.Item>
   );

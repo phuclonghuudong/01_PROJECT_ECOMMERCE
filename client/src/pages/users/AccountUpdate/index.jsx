@@ -1,7 +1,8 @@
-import React from "react";
-import { Button, Col, Form, Row } from "antd";
-import { NavLink } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Button, Col, Form, notification, Row } from "antd";
+import { NavLink, useNavigate } from "react-router-dom";
 import LabelInput from "./../../../components/LabelInput/index";
+import { useSelector } from "react-redux";
 
 const onFinish = (values) => {
   console.log("Success:", values);
@@ -10,6 +11,17 @@ const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
 const AccountUpdate = () => {
+  const navigate = useNavigate();
+  const auth = useSelector((state) => state.auth.login);
+  useEffect(() => {
+    if (!auth?.USER) {
+      notification.warning({
+        message: "Bạn cần đăng nhập để thực hiện thao tác này!",
+      });
+      navigate("/dang-nhap");
+    }
+  }, []);
+
   return (
     <Row style={{ display: "flex", justifyContent: "center", margin: "30px 0" }}>
       <Col xs={24} sm={24} md={12} lg={12} xl={12}>
@@ -43,7 +55,7 @@ const AccountUpdate = () => {
               name={"email"}
               message={"Please input your username!"}
               typePassword={false}
-              placeholder={"Email ...."}
+              placeholder={auth?.USER?.email}
               disabled
             />
             <LabelInput
@@ -51,21 +63,21 @@ const AccountUpdate = () => {
               name={"username"}
               message={"Please input your username!"}
               typePassword={false}
-              placeholder={"Username ...."}
+              placeholder={auth?.USER?.username ? auth?.USER?.username : "Username ...."}
             />
             <LabelInput
               label={"Phone"}
               name={"phone"}
               message={"Please input your phone!"}
               typePassword={false}
-              placeholder={"Phone ...."}
+              placeholder={auth?.USER?.phone ? auth?.USER?.phone : "Phone...."}
             />
             <LabelInput
               label={"Address"}
               name={"address"}
               message={"Please input your address!"}
               typePassword={false}
-              placeholder={"Address ...."}
+              placeholder={auth?.USER?.address ? auth?.USER?.address : "Address ...."}
             />
 
             <Form.Item
