@@ -1,18 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Form, notification, Row } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
-import LabelInput from "./../../../components/LabelInput/index";
+import LabelInput from "../../../components/LabelInput";
 import { useSelector } from "react-redux";
+import _ from "lodash";
 
-const onFinish = (values) => {
-  console.log("Success:", values);
-};
-const onFinishFailed = (errorInfo) => {
-  console.log("Failed:", errorInfo);
+const validateMessages = {
+  required: "${name} is required!",
+  types: {
+    email: "${name} is not a valid email!",
+    number: "${name} is not a valid number!",
+  },
 };
 const AccountUpdate = () => {
+  const [form] = Form.useForm();
   const navigate = useNavigate();
   const auth = useSelector((state) => state.auth.login);
+
   useEffect(() => {
     if (!auth?.USER) {
       notification.warning({
@@ -21,6 +25,14 @@ const AccountUpdate = () => {
       navigate("/dang-nhap");
     }
   }, []);
+
+  const onFinish = (values) => {
+    console.log("Success:12312", values);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
 
   return (
     <Row style={{ display: "flex", justifyContent: "center", margin: "30px 0" }}>
@@ -33,6 +45,7 @@ const AccountUpdate = () => {
         <div style={{ margin: "10px" }}>
           <div className="title-page-account">Thông tin tài khoản</div>
           <Form
+            form={form}
             name="basic"
             labelCol={{
               span: 4,
@@ -43,19 +56,19 @@ const AccountUpdate = () => {
             style={{
               maxWidth: 600,
             }}
-            initialValues={{
-              remember: true,
-            }}
+            validateMessages={validateMessages}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
+            initialValues={auth?.USER}
           >
             <LabelInput
               label={"Email"}
               name={"email"}
               message={"Please input your username!"}
               typePassword={false}
-              placeholder={auth?.USER?.email}
+              required
+              placeholder={auth?.USER?.email ? auth?.USER?.email : "Username ...."}
               disabled
             />
             <LabelInput
@@ -86,7 +99,7 @@ const AccountUpdate = () => {
                 span: 16,
               }}
             >
-              <Button type="primary" htmlType="submit" className="button-submit">
+              <Button type="primary" className="button-submit" htmlType="submit">
                 Cập nhật
               </Button>
             </Form.Item>

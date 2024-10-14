@@ -48,6 +48,7 @@ const updateProduct = async (id, data) => {
       };
     }
     const result = await Product.findByIdAndUpdate(id, data, { new: true });
+
     return {
       EC: 0,
       EM: "UPDATE SUCCESS",

@@ -84,6 +84,8 @@ const registerUser = async (data) => {
       phone: phone,
       password: hassPassword,
       status: 1,
+      address: "",
+      avatar: "",
       isAdmin: false,
     });
     return {

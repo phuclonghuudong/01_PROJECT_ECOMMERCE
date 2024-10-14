@@ -58,7 +58,7 @@ body {
 }
 .input-form {
   height: 40px !important;
-  border: 1px solid #c5d0d6 !important;
+  /* border: 1px solid #c5d0d6 !important; */
 }
 /* Layout */
 .layout-center {
@@ -625,4 +625,30 @@ body {
   color: #d90f0c;
   font-weight: 600;
   text-transform: lowercase;
+}
+.admin-btn-addNew {
+  background-color: #20c997;
+  transition: 0.5s !important;
+  font-weight: 500;
+  color: var(--black);
+  text-transform: uppercase;
+}
+.admin-btn-delete {
+  background-color: red;
+  transition: 0.5s !important;
+  font-weight: 500;
+  color: var(--black);
+  text-transform: uppercase;
+}
+.admin-btn-addNew:hover {
+  background-color: #23c60a !important;
+}
+.admin-btn-delete:hover {
+  background-color: var(--black) !important;
+  color: red !important;
+}
+.upload-files {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
 }

@@ -2,16 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Button, Table } from "antd";
 import { FaPlus } from "react-icons/fa";
 import * as UserServices from "../../../services/UserService";
+import TableComponent from "../../../components/TableComponent";
 
 const columns = [
   {
-    title: "STT",
-    dataIndex: "key",
-  },
-  {
     title: "Họ và tên",
     dataIndex: "username",
-    // sorter: true,
   },
   {
     title: "Email",
@@ -24,6 +20,7 @@ const columns = [
   {
     title: "Số điện thoại",
     dataIndex: "phone",
+    sorter: (a, b) => a.phone - b.phone,
   },
   {
     title: "Ảnh đại diện",
@@ -32,12 +29,12 @@ const columns = [
   {
     title: "Tình trạng",
     dataIndex: "status",
+    sorter: (a, b) => a.status - b.status,
   },
 ];
 
 const Customer = () => {
   const [listData, setListData] = useState();
-  console.log("listData", listData);
   useEffect(() => {
     fetchListData();
   }, []);
@@ -56,17 +53,7 @@ const Customer = () => {
         <Button className="button-admin-circle" style={{ borderStyle: "dashed", height: "150px", width: "150px" }}>
           <FaPlus size={60} />
         </Button>
-        <Table
-          columns={columns}
-          dataSource={listData}
-          style={{ marginTop: "20px" }}
-          size="small"
-          bordered
-          // scroll={{
-          //   x: "calc(700px + 50%)",
-          //   y: 47 * 5,
-          // }}
-        />
+        <TableComponent columns={columns} data={listData} />
       </div>
     </div>
   );

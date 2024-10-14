@@ -1,7 +1,19 @@
 import { Form, Input, InputNumber } from "antd";
 import React from "react";
 
-const LabelInput = ({ label, name, message, typePassword, placeholder, typeTextArea, disabled, required, type }) => {
+const LabelInputUpdate = ({
+  value,
+  onChange,
+  label,
+  name,
+  typePassword,
+  placeholder,
+  typeTextArea,
+  disabled,
+  required,
+  type,
+  defaultValue,
+}) => {
   return (
     <Form.Item
       label={label}
@@ -10,18 +22,18 @@ const LabelInput = ({ label, name, message, typePassword, placeholder, typeTextA
         {
           type: !type ? "" : type,
           required: !required ? true : false,
-          // message: { message },
         },
       ]}
     >
       {typePassword ? (
-        <Input.Password placeholder={placeholder} />
+        <Input.Password placeholder={placeholder} value={value} onChange={onchange} />
       ) : typeTextArea ? (
         <Input.TextArea
           // className="input-form"
           placeholder={placeholder}
           disabled={!disabled ? false : true}
           autoComplete="off"
+          onChange={onChange}
         />
       ) : type === "number" ? (
         <InputNumber
@@ -32,6 +44,7 @@ const LabelInput = ({ label, name, message, typePassword, placeholder, typeTextA
           autoComplete="off"
           min={1}
           autoFocus={false}
+          onChange={onChange}
         />
       ) : (
         <Input
@@ -39,10 +52,12 @@ const LabelInput = ({ label, name, message, typePassword, placeholder, typeTextA
           placeholder={placeholder}
           disabled={!disabled ? false : true}
           autoComplete="off"
+          onChange={onChange}
+          defaultValue={defaultValue}
         />
       )}
     </Form.Item>
   );
 };
 
-export default LabelInput;
+export default LabelInputUpdate;

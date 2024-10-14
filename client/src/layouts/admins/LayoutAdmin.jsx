@@ -133,7 +133,7 @@ const LayoutAdmin = () => {
 
         <Row>
           {collapsedSmall ? (
-            <Col xs={24} sm={24} md={24} lg={0} xl={0}>
+            <Col xs={24} sm={24} md={0} lg={0} xl={0}>
               <Menu
                 defaultSelectedKeys={["1"]}
                 // defaultOpenKeys={["sub1"]}
@@ -159,7 +159,7 @@ const LayoutAdmin = () => {
             theme="dark"
             inlineCollapsed={collapsed}
             items={items}
-            style={{ display: "flex", flexFlow: "column", height: "100vh" }}
+            style={{ display: "flex", flexFlow: "column", height: "100vmax" }}
           />
         </Col>
         <Col xs={24} sm={24} md={!collapsed ? 18 : 21} lg={!collapsed ? 20 : 22} xl={!collapsed ? 20 : 22}>

@@ -22,12 +22,12 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 
 //config body-parser
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: "10mb" })); // Đặt giới hạn kích thước là 10MB
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
 //config req.body
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 //khai báo route
 routerAPI(app);

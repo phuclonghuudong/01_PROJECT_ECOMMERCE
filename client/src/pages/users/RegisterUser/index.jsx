@@ -50,9 +50,10 @@ const RegisterUser = () => {
   };
   const onFinish = async (values) => {
     const check = isValid(values);
+    setLoading(true);
+
     if (check === true) {
       const result = await UserService.registerUser(values);
-      setLoading(true);
 
       if (result?.EC === 0) {
         navigate("/dang-nhap");
