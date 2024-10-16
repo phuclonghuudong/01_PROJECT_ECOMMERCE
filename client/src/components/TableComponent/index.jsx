@@ -4,12 +4,14 @@ import React, { useState } from "react";
 const onChange = (pagination, filters, sorter, extra) => {
   // console.log("params", pagination, filters, sorter, extra);
 };
-const TableComponent = ({ columns, data }) => {
+const TableComponent = (props) => {
   const [checkStrictly, setCheckStrictly] = useState(false);
+  const { columns = [], data = [] } = props;
 
   return (
     <div>
       <Table
+        {...props}
         columns={columns}
         dataSource={data}
         onChange={onChange}

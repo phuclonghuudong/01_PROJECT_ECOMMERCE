@@ -4,6 +4,10 @@ export const admin_getAllProduct = async (data) => {
   const URL_API = "/v1/api/product/all";
   return await axios.get(URL_API, data);
 };
+export const admin_detail_product = async (id) => {
+  const URL_API = `/v1/api/product/detail/${id}`;
+  return await axios.get(URL_API, id);
+};
 export const create = async (data) => {
   const URL_API = "/v1/api/product/create";
   return await axios.post(URL_API, data);

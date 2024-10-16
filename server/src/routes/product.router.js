@@ -8,6 +8,6 @@ routerProduct.put("/update/:id", delay1s, ProductController.updateProduct);
 routerProduct.post("/delete/:id", delay1s, ProductController.deleteProduct);
 
 routerProduct.get("/all", ProductController.getAllProduct);
-routerProduct.get("/detail/:id", ProductController.getDetailProduct);
+routerProduct.get("/detail/:id", delay1s, ProductController.getDetailProduct);
 
 module.exports = routerProduct;

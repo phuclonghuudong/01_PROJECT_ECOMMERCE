@@ -1,7 +1,18 @@
 import { Form, Input, InputNumber } from "antd";
 import React from "react";
 
-const LabelInput = ({ label, name, message, typePassword, placeholder, typeTextArea, disabled, required, type }) => {
+const LabelInput = ({
+  label,
+  name,
+  message,
+  typePassword,
+  placeholder,
+  typeTextArea,
+  typeNumber,
+  disabled,
+  required,
+  type,
+}) => {
   return (
     <Form.Item
       label={label}
@@ -23,10 +34,10 @@ const LabelInput = ({ label, name, message, typePassword, placeholder, typeTextA
           disabled={!disabled ? false : true}
           autoComplete="off"
         />
-      ) : type === "number" ? (
+      ) : typeNumber ? (
         <InputNumber
           // className="input-form"
-          style={{ width: "50%" }}
+          style={{ width: "80%" }}
           placeholder={placeholder}
           disabled={!disabled ? false : true}
           autoComplete="off"

@@ -157,7 +157,7 @@ const getDetailProduct = async (id) => {
 
     return {
       EC: 0,
-      EM: "SUCCESS",
+      EM: "GETDETAIL SUCCESS",
       DT: result,
     };
   } catch (error) {
