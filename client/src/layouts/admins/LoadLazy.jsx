@@ -1,12 +1,15 @@
-import { Spin } from "antd";
+import { notification, Spin } from "antd";
 import React, { Suspense, useEffect } from "react";
 import { loginRedux } from "../../redux/auth.slice";
 import * as UserService from "../../services/UserService";
 import { useDispatch, useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const LoadLazyAdmin = ({ children }) => {
   const auth = useSelector((state) => state.auth.login);
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -51,6 +54,7 @@ const LoadLazyAdmin = ({ children }) => {
       return Promise.reject(err);
     }
   );
+
   return <Suspense fallback={<Spin size="small" />}>{children}</Suspense>;
 };
 

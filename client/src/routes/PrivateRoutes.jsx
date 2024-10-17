@@ -18,7 +18,7 @@ const PrivateRoutes = [
     path: "/admin/",
     element: <LoadLazy children={<LayoutAdmin />} />,
     children: [
-      { path: "", element: <LoadLazy children={<Dashborad />} /> }, //index: true,
+      { index: true, element: <LoadLazy children={<Dashborad />} /> }, //index: true,
       { path: "customer", element: <LoadLazy children={<Customer />} /> },
       { path: "product", element: <LoadLazy children={<Product />} /> },
       { path: "category", element: <LoadLazy children={<Category />} /> },

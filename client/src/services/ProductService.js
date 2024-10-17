@@ -27,7 +27,7 @@ export const update = async (id, data, token) => {
 };
 export const deleted = async (id, token) => {
   const URL_API = `/v1/api/product/delete/${id}`;
-  return await axios.get(URL_API, {
+  return await axios.delete(URL_API, {
     headers: {
       authorization: `Bearer ${token}`,
     },

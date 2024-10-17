@@ -13,14 +13,12 @@ const Delete = ({ isModalOpen, handleCancel, data, isloading, token }) => {
       notification.success({
         message: result?.EM,
       });
-
       handleCancel();
     } else {
       notification.error({
         message: result?.EM,
       });
     }
-
     setLoading(false);
   };
   return (

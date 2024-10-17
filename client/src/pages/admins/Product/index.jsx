@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Input, notification, Row, Spin } from "antd";
 import { FaPencilAlt, FaPlus } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
@@ -99,6 +99,12 @@ const Product = () => {
     }
   }, [isShowDelete, isShowUpdate]);
 
+  const dataTable =
+    listProduct?.length &&
+    listProduct.map((item) => {
+      return { ...item, key: item._id };
+    });
+
   const fetchData = async () => {
     const result = await ProductService.admin_getAllProduct();
     if (result?.EC === 0) {
@@ -120,9 +126,7 @@ const Product = () => {
   const onFinishCreate = async (values) => {
     values.image = avatar;
     setLoading(true);
-
     const result = await ProductService.create(values, auth?.ACCESS_TOKEN);
-
     if (result?.EC === 0) {
       notification.success({
         message: result?.EM,
@@ -241,7 +245,7 @@ const Product = () => {
         </Button>
         <TableComponent
           columns={columns}
-          data={listProduct}
+          data={dataTable}
           onRow={(record, rowIndex) => {
             return {
               onClick: (event) => {
