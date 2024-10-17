@@ -15,11 +15,11 @@ const authMiddleWare = (req, res, next) => {
   if (!decoded) {
     return res.status(404).json({
       EC: "ERR",
-      EM: "The Authentication",
+      EM: "The Authentication decode!",
     });
   }
 
-  if (decoded?.payload?.isAdmin) {
+  if (decoded?.isAdmin === true) {
     next();
   } else {
     return res.status(404).json({

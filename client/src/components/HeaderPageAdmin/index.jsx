@@ -4,6 +4,8 @@ import { FaFacebookMessenger, FaBell } from "react-icons/fa6";
 import { Badge, Button, Col, Popover, Row } from "antd";
 import { GoClockFill } from "react-icons/go";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 
 const contentAccount = (
   <div style={{ margin: "0", padding: "0" }}>
@@ -16,14 +18,18 @@ const contentAccount = (
   </div>
 );
 const HeaderPageAdmin = () => {
+  const auth = useSelector((state) => state.auth.login);
+
   return (
     <Col xs={0} sm={0} md={24} lg={24} xl={24} className="">
       <Row style={{ padding: "0 10px ", width: "100%" }} className="layout-header-title-admin">
-        <Col xs={4} sm={4} md={4} lg={4} xl={4} align="left">
-          <span className="title-header-admin">Hello, ADMIN</span>
+        <Col xs={4} sm={4} md={6} lg={6} xl={6} align="left">
+          <span className="title-header-admin">
+            {auth?.USER && auth?.USER?.username ? `Hello, ${auth?.USER?.username}` : "Bạn chưa có tài khoản!"}
+          </span>
         </Col>
 
-        <Col xs={6} sm={6} md={15} lg={16} xl={17}>
+        <Col xs={6} sm={6} md={13} lg={14} xl={15}>
           <span className="title-header-admin">
             <GoClockFill size={"20px"} />
           </span>

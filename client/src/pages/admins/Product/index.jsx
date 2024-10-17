@@ -13,6 +13,7 @@ import LabelImage from "../../../components/LabelImage";
 import DrawerComponent from "../../../components/DrawerComponent";
 import LabelButton from "../../../components/LabelButton";
 import FormComponent from "../../../components/FormComponent";
+import { useSelector } from "react-redux";
 
 const validateMessages = {
   required: "${name} is required!",
@@ -51,10 +52,10 @@ const formItemLayout = {
     },
   },
 };
-
 const Product = () => {
   const [formAddNew] = Form.useForm();
   const [formUpdate] = Form.useForm();
+  const auth = useSelector((state) => state.auth.login);
 
   const [isShowModal, setIsShowModal] = useState(false);
   const [isShowUpdate, setIsShowUpdate] = useState(false);
@@ -89,6 +90,7 @@ const Product = () => {
       formAddNew.resetFields();
     }
   }, [isShowModal]);
+
   useEffect(() => {
     if (!isShowDelete || !isShowUpdate) {
       setProduct();
@@ -119,7 +121,7 @@ const Product = () => {
     values.image = avatar;
     setLoading(true);
 
-    const result = await ProductService.create(values);
+    const result = await ProductService.create(values, auth?.ACCESS_TOKEN);
 
     if (result?.EC === 0) {
       notification.success({
@@ -142,7 +144,7 @@ const Product = () => {
     values.image = avatar;
 
     setLoading(true);
-    const result = await ProductService.update(product._id, values);
+    const result = await ProductService.update(product._id, values, auth?.ACCESS_TOKEN);
 
     if (result?.EC === 0) {
       notification.success({
@@ -187,8 +189,8 @@ const Product = () => {
   };
 
   const columns = [
-    { title: "ID", dataIndex: "id", sorter: (a, b) => a.id - b.id },
-    { title: "Tên sản phẩm", dataIndex: "name" },
+    { title: "ID", dataIndex: "id", sorter: (a, b) => a.id.length - b.id.length },
+    { title: "Tên sản phẩm", dataIndex: "name", sorter: (a, b) => a.name.length - b.name.length },
     {
       title: "Giá bán",
       dataIndex: "price",
@@ -379,7 +381,7 @@ const Product = () => {
             </Row>
             <Row gutter={16}>
               <Col span={6}>
-                <LabelImage name={"image"} onChange={handleOnchangeAvatar} avatar={product?.image} />
+                <LabelImage name={"image"} onChange={handleOnchangeAvatar} avatar={avatar ? avatar : product?.image} />
               </Col>
               <Col span={18}>
                 <LabelInput
@@ -404,6 +406,7 @@ const Product = () => {
         handleCancel={() => setIsShowDelete(false)}
         data={product}
         isloading={loading}
+        token={auth}
       />
 
       {/* </Spin> */}

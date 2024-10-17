@@ -15,10 +15,10 @@ const Sales = React.lazy(() => import("../pages/admins/Sales"));
 
 const PrivateRoutes = [
   {
-    path: "/admin",
+    path: "/admin/",
     element: <LoadLazy children={<LayoutAdmin />} />,
     children: [
-      { index: true, element: <LoadLazy children={<Dashborad />} /> },
+      { path: "", element: <LoadLazy children={<Dashborad />} /> }, //index: true,
       { path: "customer", element: <LoadLazy children={<Customer />} /> },
       { path: "product", element: <LoadLazy children={<Product />} /> },
       { path: "category", element: <LoadLazy children={<Category />} /> },

@@ -2,13 +2,13 @@ import { Button, Modal, notification, Spin } from "antd";
 import React, { useState } from "react";
 import * as ProductServices from "../../../services/ProductService";
 
-const Delete = ({ isModalOpen, handleCancel, data, isloading }) => {
+const Delete = ({ isModalOpen, handleCancel, data, isloading, token }) => {
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
     setLoading(true);
 
-    const result = await ProductServices.deleted(data._id, data);
+    const result = await ProductServices.deleted(data._id, token?.ACCESS_TOKEN);
     if (result?.EC === 0) {
       notification.success({
         message: result?.EM,

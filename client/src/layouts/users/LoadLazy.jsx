@@ -38,7 +38,6 @@ const LoadLazy = ({ children }) => {
 
       if (decode?.exp < currentTime.getTime() / 1000) {
         const data = await UserService.refreshToken();
-        console.log("data--------", data);
 
         if (data?.EC === 0) {
           localStorage.setItem("access_token", data?.DT?.ACCESS_TOKEN);
