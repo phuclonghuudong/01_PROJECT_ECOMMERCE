@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Badge, Col, Input, notification, Popover, Row, Spin, Tooltip } from "antd";
+import { Badge, Button, Col, Input, notification, Popover, Row, Spin, Tooltip } from "antd";
 import logo from "../../../assets/logo.png";
 import { BiSolidBinoculars } from "react-icons/bi";
 import { FaUserLarge, FaUserAstronaut, FaLocationDot } from "react-icons/fa6";
@@ -8,6 +8,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import * as UserService from "../../../services/UserService";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutRedux } from "../../../redux/auth.slice";
+import { searchRedux } from "../../../redux/product.slice";
+import { FaSearch } from "react-icons/fa";
 
 const contentCheck = (
   <div style={{ margin: "0", padding: "0" }}>
@@ -19,9 +21,22 @@ const contentCheck = (
     </NavLink>
   </div>
 );
+const ButtonLabelSearch = ({ onClick, onChange }) => {
+  return (
+    <div className="div-search-header">
+      <Input className="input-search" variant="borderless" placeholder="Tìm sản phẩm..." onChange={onChange} />
+      <Button className="button-search-header" onClick={onClick}>
+        <span style={{ fontSize: "18px", paddingTop: "2px" }}>
+          <FaSearch />
+        </span>
+      </Button>
+    </div>
+  );
+};
 const Header = () => {
   const auth = useSelector((state) => state.auth.login);
 
+  const [search, setSearch] = useState();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -64,6 +79,17 @@ const Header = () => {
       )}
     </div>
   );
+
+  const handleSearch = () => {
+    // if (search) {
+    dispatch(searchRedux(search));
+    // } else {
+    //   notification.warning({
+    //     message: "Bạn chưa nhập sản phẩm cần tìm kiếm!",
+    //   });
+    // }
+  };
+
   return (
     <div style={{ height: "80px" }}>
       <Spin tip="" spinning={loading}>
@@ -87,7 +113,7 @@ const Header = () => {
               </Col>
 
               <Col xs={24} sm={24} md={24} lg={8} xl={11} className="layout-center-header padding-layout">
-                <Input className="input-search" variant="borderless" placeholder="Tìm sản phẩm..." />
+                <ButtonLabelSearch onClick={handleSearch} onChange={(e) => setSearch(e.target.value)} />
               </Col>
             </Row>
           </Col>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Row } from "antd";
+import { Col } from "antd";
 import listRoutes from "../../../routes/ListRoutes";
 import { NavLink } from "react-router-dom";
 

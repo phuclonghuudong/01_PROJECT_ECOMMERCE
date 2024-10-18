@@ -61,6 +61,7 @@ const Product = () => {
   const [isShowUpdate, setIsShowUpdate] = useState(false);
   const [isShowDelete, setIsShowDelete] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(false);
 
   const [avatar, setAvatar] = useState("");
   const [product, setProduct] = useState("");
@@ -106,10 +107,12 @@ const Product = () => {
     });
 
   const fetchData = async () => {
+    setLoadingData(true);
     const result = await ProductService.admin_getAllProduct();
     if (result?.EC === 0) {
       setListProduct(result?.DT?.data);
     }
+    setLoadingData(false);
   };
   const fetchGetDetailProduct = async (id) => {
     const result = await ProductService.admin_detail_product(id);
@@ -201,7 +204,16 @@ const Product = () => {
       sorter: (a, b) => a.price - b.price,
       render: (price) => isValidPrice(price),
     },
-    { title: "Hình ảnh", dataIndex: "image", render: (image) => <img src={image} className="upload-files" /> },
+    {
+      title: "Số lượng",
+      dataIndex: "countInStock",
+      sorter: (a, b) => a.countInStock - b.countInStock,
+    },
+    {
+      title: "Hình ảnh",
+      dataIndex: "image",
+      render: (image) => <img src={image} className="upload-files" />,
+    },
     { title: "Color", dataIndex: "color" },
     { title: "Size", dataIndex: "size" },
     {
@@ -246,6 +258,7 @@ const Product = () => {
         <TableComponent
           columns={columns}
           data={dataTable}
+          loading={loadingData}
           onRow={(record, rowIndex) => {
             return {
               onClick: (event) => {

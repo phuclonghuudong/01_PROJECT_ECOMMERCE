@@ -98,7 +98,7 @@ const getAllProduct = async (limit, page, sort, filter) => {
         EM: "SUCCESS",
         DT: {
           data: resultFilter,
-          total: totalProduct,
+          total: resultFilter.length,
           pageCurrent: Number(page + 1),
           totalPage: Math.ceil(totalProduct / limit),
         },
@@ -168,6 +168,7 @@ const getDetailProduct = async (id) => {
     };
   }
 };
+
 module.exports = {
   createProduct,
   updateProduct,

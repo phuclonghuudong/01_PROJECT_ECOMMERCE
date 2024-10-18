@@ -1,6 +1,18 @@
 import axios from "../setup/axios.customize";
 export const axiosJWT = axios.create();
 
+// User
+export const get_all_product = async (search) => {
+  let URL_API = {};
+  if (search && search.length > 0) {
+    URL_API = `/v1/api/product/all?filter=name&filter=${search}`;
+  } else {
+    URL_API = "/v1/api/product/all";
+  }
+  return await axios.get(URL_API, search);
+};
+
+// admin
 export const admin_getAllProduct = async (data) => {
   const URL_API = "/v1/api/product/all";
   return await axios.get(URL_API, data);
