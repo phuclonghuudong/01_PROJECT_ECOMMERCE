@@ -2,19 +2,21 @@ import axios from "../setup/axios.customize";
 export const axiosJWT = axios.create();
 
 // User
-export const get_all_product = async (search) => {
+export const get_all_product = async (search, current, limit) => {
   let URL_API = {};
   if (search && search.length > 0) {
-    URL_API = `/v1/api/product/all?filter=name&filter=${search}`;
+    URL_API = `/v1/api/product/all?filter=name&filter=${search}&page=${current ? current : 0}&limit=${
+      limit ? limit : 8
+    }`;
   } else {
-    URL_API = "/v1/api/product/all";
+    URL_API = `/v1/api/product/all?page=${current ? current : 0}&limit=${limit ? limit : 8}`;
   }
-  return await axios.get(URL_API, search);
+  return await axios.get(URL_API, search, current, limit);
 };
 
 // admin
 export const admin_getAllProduct = async (data) => {
-  const URL_API = "/v1/api/product/all";
+  const URL_API = "/v1/api/product/get-all";
   return await axios.get(URL_API, data);
 };
 export const admin_detail_product = async (id) => {

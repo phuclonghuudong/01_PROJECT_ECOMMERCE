@@ -139,7 +139,8 @@ const getDetailUser = async (req, res) => {
 };
 const getAllUser = async (req, res) => {
   try {
-    const result = await UserServices.getAllUser();
+    const { limit, page, sort, filter } = req.query;
+    const result = await UserServices.getAllUser(sort, filter);
     return res.status(200).json({ ...result });
   } catch (error) {
     return res.status(404).json({

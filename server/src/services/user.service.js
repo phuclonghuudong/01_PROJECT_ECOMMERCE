@@ -179,21 +179,55 @@ const getDetailUser = async (id) => {
     };
   }
 };
-const getAllUser = async () => {
+const getAllUser = async (limit, page, sort, filter) => {
   try {
-    const result = await User.find();
-    if (!result) {
+    const totalUser = await User.countDocuments();
+
+    if (filter) {
+      const resultFilter = await User.find({ [filter[0]]: { $regex: filter[1], $options: "i" } });
+
       return {
-        EC: "ERR",
-        EM: "ERROR",
-        DT: "",
+        EC: 0,
+        EM: "SUCCESS",
+        DT: {
+          data: resultFilter,
+          total: resultFilter.length,
+          pageCurrent: Number(page + 1),
+          totalPage: Math.ceil(totalUser / limit),
+        },
       };
     }
+    if (sort) {
+      const objSort = {};
+      objSort[sort[1]] = sort[0];
+      const resultSort = await User.find()
+        .limit(limit)
+        .skip(page * limit)
+        .sort(objSort);
+      return {
+        EC: 0,
+        EM: "SUCCESS",
+        DT: {
+          data: resultSort,
+          total: resultSort.length,
+          pageCurrent: Number(page + 1),
+          totalPage: Math.ceil(totalUser / limit),
+        },
+      };
+    }
+    const result = await User.find()
+      .limit(limit)
+      .skip(page * limit);
 
     return {
       EC: 0,
       EM: "SUCCESS",
-      DT: result,
+      DT: {
+        data: result,
+        total: totalUser,
+        pageCurrent: Number(page + 1),
+        totalPage: Math.ceil(totalUser / limit),
+      },
     };
   } catch (error) {
     return {

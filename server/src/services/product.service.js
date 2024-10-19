@@ -91,7 +91,7 @@ const getAllProduct = async (limit, page, sort, filter) => {
     const totalProduct = await Product.countDocuments();
 
     if (filter) {
-      const resultFilter = await Product.find({ [filter[0]]: { $regex: filter[1] } });
+      const resultFilter = await Product.find({ [filter[0]]: { $regex: filter[1], $options: "i" } });
 
       return {
         EC: 0,
@@ -116,7 +116,7 @@ const getAllProduct = async (limit, page, sort, filter) => {
         EM: "SUCCESS",
         DT: {
           data: resultSort,
-          total: totalProduct,
+          total: resultSort.length,
           pageCurrent: Number(page + 1),
           totalPage: Math.ceil(totalProduct / limit),
         },

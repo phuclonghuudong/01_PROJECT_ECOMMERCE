@@ -101,16 +101,16 @@ const Product = () => {
   }, [isShowDelete, isShowUpdate]);
 
   const dataTable =
-    listProduct?.length &&
-    listProduct.map((item) => {
-      return { ...item, key: item._id };
+    listProduct?.data?.length &&
+    listProduct?.data?.map((item, key) => {
+      return { ...item, key: key + 1 };
     });
 
   const fetchData = async () => {
     setLoadingData(true);
     const result = await ProductService.admin_getAllProduct();
     if (result?.EC === 0) {
-      setListProduct(result?.DT?.data);
+      setListProduct(result?.DT);
     }
     setLoadingData(false);
   };
@@ -196,13 +196,14 @@ const Product = () => {
   };
 
   const columns = [
-    { title: "ID", dataIndex: "id", sorter: (a, b) => a.id.length - b.id.length },
+    { title: "ID", dataIndex: "key", sorter: (a, b) => a.id.length - b.id.length },
+    { title: "Mã Sản phẩm", dataIndex: "id", sorter: (a, b) => a.id.length - b.id.length },
     { title: "Tên sản phẩm", dataIndex: "name", sorter: (a, b) => a.name.length - b.name.length },
     {
       title: "Giá bán",
       dataIndex: "price",
       sorter: (a, b) => a.price - b.price,
-      render: (price) => isValidPrice(price),
+      render: (price) => (price ? isValidPrice(price) : "Giá rỗng"),
     },
     {
       title: "Số lượng",
@@ -212,7 +213,7 @@ const Product = () => {
     {
       title: "Hình ảnh",
       dataIndex: "image",
-      render: (image) => <img src={image} className="upload-files" />,
+      render: (image) => (image ? <img src={image} className="upload-files-table" /> : "Chưa có hình ảnh"),
     },
     { title: "Color", dataIndex: "color" },
     { title: "Size", dataIndex: "size" },
@@ -259,6 +260,9 @@ const Product = () => {
           columns={columns}
           data={dataTable}
           loading={loadingData}
+          total={listProduct?.total}
+          pageCurrent={listProduct?.pageCurrent}
+          totalPage={listProduct?.totalPage}
           onRow={(record, rowIndex) => {
             return {
               onClick: (event) => {

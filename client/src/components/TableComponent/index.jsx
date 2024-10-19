@@ -3,22 +3,31 @@ import React, { useMemo, useState } from "react";
 import { Excel } from "antd-table-saveas-excel";
 import ButtonAction from "../ButtonAction";
 
-const onChange = (pagination, filters, sorter, extra) => {
-  // console.log("params", pagination, filters, sorter, extra);
-};
 const TableComponent = (props) => {
-  const { columns = [], data = [], loading } = props;
+  const { columns = [], data = [], loading, total, pageCurrent, totalPage } = props;
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: pageCurrent ? pageCurrent : 1,
+      pageSize: total, //tổng số lượng sản phẩm
+    },
+  });
+
+  const onChange = (pagination, filters, sorter, extra) => {
+    // console.log("params", pagination, filters, sorter, extra);
+    setTableParams({
+      pagination,
+      filters,
+      // sortOrder: Array.isArray(sorter) ? undefined : sorter.order,
+      // sortField: Array.isArray(sorter) ? undefined : sorter.field,
+    });
+  };
 
   const newColumnExport = useMemo(() => {
     const filter = columns?.filter((col) => col.dataIndex !== "action");
     return filter;
   }, [columns]);
-
   const handleExport = () => {
     const excel = new Excel();
-    console.log(newColumnExport);
-    console.log(data);
-    console.log(excel);
 
     excel
       .addSheet("test")
@@ -45,7 +54,7 @@ const TableComponent = (props) => {
         style={{ marginTop: "20px" }}
         size="small"
         bordered
-        pagination={false}
+        pagination={tableParams.pagination}
         // scroll={{
         //   x: "calc(700px + 50%)",
         //   y: 47 * 5,

@@ -7,6 +7,8 @@ import { loginRedux } from "../../../redux/auth.slice";
 import * as UserService from "../../../services/UserService";
 import { useDispatch, useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
+import ContentProduct from "./ContentProduct";
+import TitlePageModule from "./../../../components/TitlePageModule/index";
 
 const HomePage = () => {
   const auth = useSelector((state) => state.auth.login);
@@ -59,6 +61,8 @@ const HomePage = () => {
     <div>
       <SliderComponent arrImages={[slider01, slider02]} />
       <SectionServiceComponent />
+      <TitlePageModule title={"Sản phẩm"} />
+      <ContentProduct />
     </div>
   );
 };

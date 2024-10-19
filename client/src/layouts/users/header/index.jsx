@@ -21,10 +21,16 @@ const contentCheck = (
     </NavLink>
   </div>
 );
-const ButtonLabelSearch = ({ onClick, onChange }) => {
+const ButtonLabelSearch = ({ onClick, onChange, onKeyUp }) => {
   return (
     <div className="div-search-header">
-      <Input className="input-search" variant="borderless" placeholder="Tìm sản phẩm..." onChange={onChange} />
+      <Input
+        className="input-search"
+        variant="borderless"
+        placeholder="Tìm sản phẩm..."
+        onChange={onChange}
+        onKeyUp={onKeyUp}
+      />
       <Button className="button-search-header" onClick={onClick}>
         <span style={{ fontSize: "18px", paddingTop: "2px" }}>
           <FaSearch />
@@ -89,6 +95,11 @@ const Header = () => {
     //   });
     // }
   };
+  const handleKeyUp = (event) => {
+    if (event.keyCode === 13) {
+      dispatch(searchRedux(search));
+    }
+  };
 
   return (
     <div style={{ height: "80px" }}>
@@ -113,7 +124,11 @@ const Header = () => {
               </Col>
 
               <Col xs={24} sm={24} md={24} lg={8} xl={11} className="layout-center-header padding-layout">
-                <ButtonLabelSearch onClick={handleSearch} onChange={(e) => setSearch(e.target.value)} />
+                <ButtonLabelSearch
+                  onClick={handleSearch}
+                  onChange={(e) => setSearch(e.target.value)}
+                  onKeyUp={handleKeyUp}
+                />
               </Col>
             </Row>
           </Col>

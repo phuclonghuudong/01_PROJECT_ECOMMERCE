@@ -46,7 +46,27 @@ const updateProduct = async (req, res) => {
 const getAllProduct = async (req, res) => {
   try {
     const { limit, page, sort, filter } = req.query;
-    const result = await ProductServices.getAllProduct(Number(limit) || 8, Number(page) || 0, sort, filter);
+
+    const result = await ProductServices.getAllProduct(
+      Number(!limit ? 8 : limit),
+      Number(!page ? 0 : page),
+      sort,
+      filter
+    );
+
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(404).json({
+      EC: "ERR",
+      EM: error,
+      DT: "",
+    });
+  }
+};
+const getAllProductTable = async (req, res) => {
+  try {
+    const { limit, page, sort, filter } = req.query;
+    const result = await ProductServices.getAllProduct(sort, filter);
 
     return res.status(200).json(result);
   } catch (error) {
@@ -101,6 +121,7 @@ const deleteProduct = async (req, res) => {
 
 module.exports = {
   getAllProduct,
+  getAllProductTable,
   getDetailProduct,
   createProduct,
   updateProduct,
