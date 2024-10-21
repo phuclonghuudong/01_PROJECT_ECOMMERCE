@@ -48,7 +48,7 @@ const ContentProduct = () => {
           style={{ padding: "10px", fontSize: "14px", cursor: "pointer" }}
           key={key}
         >
-          <NavLink to={"/san-pham/chi-tiet-san-pham"} className="name-product-page navlink">
+          <NavLink to={`/chi-tiet-san-pham/${item._id}`} className="name-product-page navlink">
             <div style={{ height: "207px" }}>
               <img src={item?.image} className="image-product" style={{ width: "90%" }} />
             </div>

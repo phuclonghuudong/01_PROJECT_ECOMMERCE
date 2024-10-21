@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   search: "",
+  card: "",
   isLoading: false,
 };
 
@@ -11,6 +12,9 @@ export const ProductSlice = createSlice({
   reducers: {
     searchRedux: (state, action) => {
       state.search = action.payload;
+    },
+    addOrder: (state, action) => {
+      state.card = action.payload;
     },
   },
 });

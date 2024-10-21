@@ -33,7 +33,7 @@ const PublicRoutes = [
         element: <LoadLazy children={<ProductPage />} />,
       },
       {
-        path: "/san-pham/chi-tiet-san-pham",
+        path: "/chi-tiet-san-pham/:id",
         element: <LoadLazy children={<ProductDetail />} />,
       },
       {

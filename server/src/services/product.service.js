@@ -150,7 +150,7 @@ const getDetailProduct = async (id) => {
     if (!result) {
       return {
         EC: "ERR",
-        EM: "ERROR",
+        EM: "PRODUCT NOT EXISTS!",
         DT: "",
       };
     }

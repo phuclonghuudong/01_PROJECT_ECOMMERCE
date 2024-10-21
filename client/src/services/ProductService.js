@@ -13,7 +13,10 @@ export const get_all_product = async (search, current, limit) => {
   }
   return await axios.get(URL_API, search, current, limit);
 };
-
+export const get_details_product = async (id) => {
+  const URL_API = `/v1/api/product/detail/${id}`;
+  return await axios.get(URL_API);
+};
 // admin
 export const admin_getAllProduct = async (data) => {
   const URL_API = "/v1/api/product/get-all";

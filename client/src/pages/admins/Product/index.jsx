@@ -14,6 +14,8 @@ import DrawerComponent from "../../../components/DrawerComponent";
 import LabelButton from "../../../components/LabelButton";
 import FormComponent from "../../../components/FormComponent";
 import { useSelector } from "react-redux";
+import SelectComponent from "./../../../components/SelectComponent/index";
+import { listColor, listSize, listType } from "../../../routes/ListData";
 
 const validateMessages = {
   required: "${name} is required!",
@@ -298,27 +300,10 @@ const Product = () => {
               placeholder={"Tên sản phẩm"}
             />
 
-            <LabelInput
-              label={"Loại sản phẩm"}
-              name={"type"}
-              message={"Please input!"}
-              typePassword={false}
-              placeholder={"Loại sản phẩm"}
-            />
-            <LabelInput
-              label={"Màu"}
-              name={"color"}
-              message={"Please input!"}
-              typePassword={false}
-              placeholder={"Màu"}
-            />
-            <LabelInput
-              label={"Kích thước"}
-              name={"size"}
-              message={"Please input!"}
-              typePassword={false}
-              placeholder={"Size"}
-            />
+            <SelectComponent label="Loại sản phẩm" data={listType} name={"type"} />
+            <SelectComponent label="Màu" data={listColor} name={"color"} />
+            <SelectComponent label="Kích thước" data={listSize} name={"size"} />
+
             <LabelInput
               label={"Giá sản phẩm"}
               typeNumber
@@ -380,13 +365,13 @@ const Product = () => {
             </Row>
             <Row gutter={16}>
               <Col span={12}>
-                <LabelInput label={"Loại sản phẩm"} name={"type"} placeholder={"Loại sản phẩm"} />
+                <SelectComponent label="Loại sản phẩm" data={listType} name={"type"} />
               </Col>
               <Col span={6}>
-                <LabelInput label={"Màu"} name={"color"} placeholder={"Màu sản phẩm"} />
+                <SelectComponent label="Màu" data={listColor} name={"color"} />
               </Col>
               <Col span={6}>
-                <LabelInput label={"Size"} name={"size"} placeholder={"Size sản phẩm"} />
+                <SelectComponent label="Kích thước" data={listSize} name={"size"} />
               </Col>
             </Row>
             <Row gutter={16}>

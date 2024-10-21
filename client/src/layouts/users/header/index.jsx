@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Badge, Button, Col, Input, notification, Popover, Row, Spin, Tooltip } from "antd";
 import logo from "../../../assets/logo.png";
 import { BiSolidBinoculars } from "react-icons/bi";
@@ -89,6 +89,7 @@ const Header = () => {
   const handleSearch = () => {
     // if (search) {
     dispatch(searchRedux(search));
+    navigate("/san-pham");
     // } else {
     //   notification.warning({
     //     message: "Bạn chưa nhập sản phẩm cần tìm kiếm!",
@@ -98,6 +99,7 @@ const Header = () => {
   const handleKeyUp = (event) => {
     if (event.keyCode === 13) {
       dispatch(searchRedux(search));
+      navigate("/san-pham");
     }
   };
 
