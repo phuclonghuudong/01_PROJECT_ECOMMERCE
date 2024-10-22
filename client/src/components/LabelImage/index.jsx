@@ -3,14 +3,14 @@ import React from "react";
 import { WrapperUploadFile } from "./style";
 import { FaFileUpload } from "react-icons/fa";
 
-const LabelImage = ({ avatar, name, onChange }) => {
+const LabelImage = ({ avatar, name, onChange, required }) => {
   return (
     <Form.Item
       label={"Hình ảnh"}
       name={name}
       rules={[
         {
-          required: true,
+          required: !required ? true : false,
         },
       ]}
     >

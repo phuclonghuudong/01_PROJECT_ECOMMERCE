@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 
 const ContentProduct = () => {
   const [current, setCurrent] = useState(0);
+  const limit = 12;
   const searchRedux = useSelector((state) => state.product.search);
 
   const [loading, setLoading] = useState(false);
@@ -19,7 +20,6 @@ const ContentProduct = () => {
 
   const fetchData = async (search, page) => {
     setLoading(true);
-    const limit = 12;
     const result = await ProductServices.get_all_product(search, page, limit);
     if (result?.EC === 0) {
       setListData(result?.DT);
@@ -83,6 +83,7 @@ const ContentProduct = () => {
             defaultCurrent={listData?.pageCurrent}
             total={listData?.total}
             current={listData?.pageCurrent}
+            pageSize={limit}
             onChange={onChange}
           />
         </div>

@@ -350,7 +350,9 @@ const Product = () => {
       <DrawerComponent title={"Cập nhật sản phẩm"} open={isShowUpdate} close={() => setIsShowUpdate(false)}>
         <Spin tip="" spinning={loading}>
           <FormComponent
+            {...formItemLayout}
             form={formUpdate}
+            name={"UPDATE PRODUCT"}
             validateMessages={validateMessages}
             onFinish={onFinishUpdate}
             onFinishFailed={onFinishFailedUpdate}
@@ -382,7 +384,7 @@ const Product = () => {
                 <LabelInput label={"Số lượng"} type={"number"} name={"countInStock"} typeNumber />
               </Col>
               <Col span={12}>
-                <LabelInput label={"Đánh giá"} name={"rating"} required />
+                <LabelInput label={"Đánh giá"} placeholder={"Đánh giá sản phẩm"} name={"rating"} required />
               </Col>
             </Row>
             <Row gutter={16}>

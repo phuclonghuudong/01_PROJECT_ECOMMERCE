@@ -40,6 +40,7 @@ const ButtonLabelSearch = ({ onClick, onChange, onKeyUp }) => {
   );
 };
 const Header = () => {
+  const order = useSelector((state) => state.order.orderItems);
   const auth = useSelector((state) => state.auth.login);
 
   const [search, setSearch] = useState();
@@ -162,7 +163,7 @@ const Header = () => {
               <Col xs={8} sm={8} md={8} lg={8} xl={8} className="layout-button-header">
                 <div style={{ textAlign: "center" }}>
                   <NavLink to={"/gio-hang"}>
-                    <Badge count={1} offset={[-10, 7]} size="middle">
+                    <Badge count={order?.length > 0 ? order?.length : 0} offset={[-10, 7]} size="middle">
                       <FaCartArrowDown className="button-header" />
                       <Col xs={0} sm={0} md={0} lg={24} xl={24}>
                         <p className="title-button">Giỏ hàng</p>

@@ -96,11 +96,12 @@ const refreshToken = async (req, res) => {
     });
   }
 };
+
 const updateUser = async (req, res) => {
   try {
     const userId = req.params.id;
     const data = req.body;
-    if (!productId) {
+    if (!userId) {
       return res.status(200).json({
         EC: "ERR",
         EM: "The userId is required!",

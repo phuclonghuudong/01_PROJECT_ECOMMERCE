@@ -4,12 +4,44 @@ import { NavLink, useNavigate } from "react-router-dom";
 import LabelInput from "../../../components/LabelInput";
 import { useSelector } from "react-redux";
 import _ from "lodash";
+import FormComponent from "../../../components/FormComponent";
 
 const validateMessages = {
   required: "${name} is required!",
   types: {
     email: "${name} is not a valid email!",
     number: "${name} is not a valid number!",
+  },
+};
+
+const formItemLayout = {
+  labelCol: {
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 7,
+    },
+    md: {
+      span: 8,
+    },
+    lg: {
+      span: 6,
+    },
+  },
+  wrapperCol: {
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 17,
+    },
+    md: {
+      span: 16,
+    },
+    lg: {
+      span: 18,
+    },
   },
 };
 const AccountUpdate = () => {
@@ -31,7 +63,11 @@ const AccountUpdate = () => {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    if (errorInfo) {
+      notification.error({
+        message: "Vui lòng điền đầy đủ thông tin!",
+      });
+    }
   };
 
   return (
@@ -44,54 +80,28 @@ const AccountUpdate = () => {
 
         <div style={{ margin: "10px" }}>
           <div className="title-page-account">Thông tin tài khoản</div>
-          <Form
+          <FormComponent
+            {...formItemLayout}
             form={form}
-            name="basic"
-            labelCol={{
-              span: 4,
-            }}
-            wrapperCol={{
-              span: 20,
-            }}
-            style={{
-              maxWidth: 600,
-            }}
+            name="UPDATE USER"
             validateMessages={validateMessages}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
             initialValues={auth?.USER}
           >
-            <LabelInput
-              label={"Email"}
-              name={"email"}
-              message={"Please input your username!"}
-              typePassword={false}
-              required
-              placeholder={auth?.USER?.email ? auth?.USER?.email : "Username ...."}
-              disabled
-            />
-            <LabelInput
-              label={"UserName"}
-              name={"username"}
-              message={"Please input your username!"}
-              typePassword={false}
-              placeholder={auth?.USER?.username ? auth?.USER?.username : "Username ...."}
-            />
+            <LabelInput label={"Email"} name={"email"} message={"Please input!"} placeholder={"Email"} />
+
+            <LabelInput label={"Username"} name={"username"} message={"Please input!"} placeholder={"Username"} />
             <LabelInput
               label={"Phone"}
               name={"phone"}
-              message={"Please input your phone!"}
-              typePassword={false}
-              placeholder={auth?.USER?.phone ? auth?.USER?.phone : "Phone...."}
+              message={"Please input!"}
+              typeNumber
+              type={"number"}
+              placeholder={"Phone"}
             />
-            <LabelInput
-              label={"Address"}
-              name={"address"}
-              message={"Please input your address!"}
-              typePassword={false}
-              placeholder={auth?.USER?.address ? auth?.USER?.address : "Address ...."}
-            />
+            <LabelInput label={"Address"} name={"address"} message={"Please input!"} placeholder={"Address"} />
 
             <Form.Item
               wrapperCol={{
@@ -103,7 +113,7 @@ const AccountUpdate = () => {
                 Cập nhật
               </Button>
             </Form.Item>
-          </Form>
+          </FormComponent>
         </div>
         <div style={{ margin: "10px" }}>
           <div className="title-page-account">Đổi mật khẩu</div>

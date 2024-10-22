@@ -104,6 +104,7 @@ const registerUser = async (data) => {
 const updateUser = async (id, data) => {
   try {
     const checkUser = await User.findOne({ _id: id });
+    console.log("object", id);
     if (checkUser === null) {
       return {
         EC: "ERR",
@@ -179,6 +180,7 @@ const getDetailUser = async (id) => {
     };
   }
 };
+
 const getAllUser = async (limit, page, sort, filter) => {
   try {
     const totalUser = await User.countDocuments();

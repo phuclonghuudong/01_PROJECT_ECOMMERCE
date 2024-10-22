@@ -1,9 +1,9 @@
-import React from "react";
-import { Button, Col, Table } from "antd";
+import React, { useEffect } from "react";
+import { Button, Col, notification, Table } from "antd";
 import { Row } from "antd";
 import { PiPhoneCallFill } from "react-icons/pi";
 import { FaUserAlt, FaMailchimp, FaMapMarkerAlt } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const columns = [
@@ -29,17 +29,18 @@ const columns = [
   },
 ];
 
-const data = [
-  {
-    order: "1",
-    date: "24/10/1999",
-    address: "Long An",
-    value: "100.000 đ",
-    status: "OK",
-  },
-];
 const AccountPage = () => {
   const auth = useSelector((state) => state.auth.login);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!auth?.USER) {
+      notification.warning({
+        message: "Bạn cần đăng nhập để thực hiện chức năng này!",
+      });
+      navigate("/dang-nhap");
+    }
+  }, [auth]);
 
   return (
     <div style={{ margin: "10px 10px 30px 10px" }}>
@@ -92,15 +93,7 @@ const AccountPage = () => {
         </Col>
         <Col xs={24} sm={24} md={18} lg={18} xl={18}>
           <div className="title-content-page-account">Đơn hàng của bạn</div>
-          <Table
-            columns={columns}
-            dataSource={data}
-            size="small"
-            // scroll={{
-            //   x: "calc(700px + 50%)",
-            //   y: 47 * 5,
-            // }}
-          />
+          <Table columns={columns} dataSource={""} size="small" />
         </Col>
       </Row>
     </div>

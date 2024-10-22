@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { FaChartBar, FaUserAlt, FaCartArrowDown } from "react-icons/fa";
 import { FaOptinMonster, FaSalesforce } from "react-icons/fa6";
 import { HiAcademicCap } from "react-icons/hi";
@@ -10,8 +10,12 @@ import { TbTruckDelivery } from "react-icons/tb";
 import { MdPostAdd } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import HeaderPageAdmin from "../../components/HeaderPageAdmin";
+import { useSelector } from "react-redux";
 
 const LayoutAdmin = () => {
+  const auth = useSelector((state) => state.auth.login);
+  const navigate = useNavigate();
+
   const [collapsed, setCollapsed] = useState(false);
   const [collapsedSmall, setCollapsedSmall] = useState(false);
   const toggleCollapsed = () => {
@@ -119,6 +123,11 @@ const LayoutAdmin = () => {
       label: "Tin tức",
     },
   ];
+  useEffect(() => {
+    if (!auth) {
+      navigate("/dang-nhap");
+    }
+  }, [auth]);
   return (
     <div>
       <Col xs={24} sm={24} md={0} lg={0} xl={0}>

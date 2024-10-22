@@ -8,12 +8,38 @@ import * as ProductServices from "../../../../services/ProductService";
 import { useNavigate } from "react-router-dom";
 import { isValidPrice } from "../../../../utils/isValidInput";
 import { listSize } from "../../../../routes/ListData";
+import { useDispatch, useSelector } from "react-redux";
+import { addOrderProduct } from "../../../../redux/order.slice";
 
 const ContentProduct = ({ id }) => {
   const [data, setData] = useState();
+  const [quantity, setQuantity] = useState(1);
+  const auth = useSelector((state) => state.auth.login);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleAddOrder = () => {};
+  const handleAddOrder = () => {
+    if (!auth?.USER) {
+      notification.warning({
+        message: "Bạn cần phải đăng nhập trước thực hiện thao tác này!",
+      });
+      navigate("/dang-nhap");
+    } else {
+      dispatch(
+        addOrderProduct({
+          orderItems: {
+            name: data?.name,
+            amount: quantity,
+            size: data?.size,
+            color: data?.color,
+            image: data?.image,
+            price: data?.price,
+            product: data?._id,
+          },
+        })
+      );
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -113,7 +139,13 @@ const ContentProduct = ({ id }) => {
                     </Row>
                   </div>
                   <div style={{ margin: "10px" }}>
-                    <GroupQuantity />
+                    <GroupQuantity
+                      countInStock={Number(data.countInStock)}
+                      number={quantity}
+                      onclickSubtraction={() => setQuantity(quantity - 1)}
+                      onclickAddition={() => setQuantity(quantity + 1)}
+                      onChange={(e) => setQuantity(e.target.value)}
+                    />
                   </div>
                   <Row style={{ margin: "20px 0" }}>
                     <ButtonSubmit title={"Mua ngay"} bgColor={"#FFB916"} />

@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 
-const GroupQuantity = () => {
-  const [number, setNumber] = useState(1);
-
-  const onclickSubtraction = () => {
-    setNumber(number - 1);
-  };
-  const onclickAddition = () => {
-    setNumber(number + 1);
-  };
+const GroupQuantity = ({ countInStock, number, onclickSubtraction, onclickAddition, onChange }) => {
   return (
     <div style={{ alignItems: "center", display: "flex", justifyContent: "start" }}>
       <button
@@ -18,15 +10,12 @@ const GroupQuantity = () => {
       >
         -
       </button>
-      <input
-        className="input-quantity"
-        value={number}
-        onChange={() => (event) => {
-          setNumber(event.target.value);
-        }}
-        disabled
-      />
-      <button className="button-quantity" onClick={onclickAddition}>
+      <input className={"input-quantity"} value={number} onChange={onChange} disabled />
+      <button
+        className={number >= countInStock ? "button-quantity-disabled" : "button-quantity"}
+        onClick={onclickAddition}
+        disabled={number >= countInStock ? true : false}
+      >
         +
       </button>
     </div>

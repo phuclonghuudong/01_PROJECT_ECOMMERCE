@@ -23,4 +23,13 @@ const listColor = [
   { id: "pink", name: "Hồng", status: true },
   { id: "black", name: "Đen", status: true },
 ];
-export { listSize, listType, listColor };
+const listRole = [
+  { id: true, name: "Admin", status: true },
+  { id: false, name: "User", status: true },
+];
+const listStatus = [
+  { id: "2", name: "Tạm khóa", status: true },
+  { id: "1", name: "Hoạt động", status: true },
+  { id: "0", name: "Dừng hoạt động", status: true },
+];
+export { listSize, listType, listColor, listRole, listStatus };

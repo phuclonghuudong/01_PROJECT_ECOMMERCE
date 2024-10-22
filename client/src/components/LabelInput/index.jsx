@@ -36,7 +36,6 @@ const LabelInput = ({
         />
       ) : typeNumber ? (
         <InputNumber
-          // className="input-form"
           style={{ width: "80%" }}
           placeholder={placeholder}
           disabled={!disabled ? false : true}
