@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   search: "",
-  isLoading: false,
+  filter: "",
 };
 
 export const ProductSlice = createSlice({
@@ -12,9 +12,18 @@ export const ProductSlice = createSlice({
     searchRedux: (state, action) => {
       state.search = action.payload;
     },
+    filterTypeRedux: (state, action) => {
+      state.filter = action.payload;
+    },
+    filterSizeRedux: (state, action) => {
+      state.filter = action.payload;
+    },
+    filterColorRedux: (state, action) => {
+      state.filter = action.payload;
+    },
   },
 });
 
-export const { searchRedux } = ProductSlice.actions;
+export const { searchRedux, filterTypeRedux, filterSizeRedux, filterColorRedux } = ProductSlice.actions;
 
 export default ProductSlice.reducer;

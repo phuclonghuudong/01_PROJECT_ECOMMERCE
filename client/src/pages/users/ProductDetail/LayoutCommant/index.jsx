@@ -51,7 +51,7 @@ const LayoutCommant = () => {
             </span>
           </Col>
           <Col xs={16} sm={14} md={14} lg={16} xl={16}>
-            {arrayReview.map((items) => {
+            {arrayReview.map((items, index) => {
               return (
                 <Row
                   style={{
@@ -60,6 +60,7 @@ const LayoutCommant = () => {
                     display: "flex",
                     textAlign: "center",
                   }}
+                  key={index}
                 >
                   <Col xs={1} sm={1} md={1} lg={1} xl={1} style={{ fontWeight: "500" }}>
                     {items.number}

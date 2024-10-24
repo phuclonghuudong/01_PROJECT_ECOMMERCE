@@ -36,18 +36,10 @@ const ContentProduct = () => {
     setCurrent(page - 1);
   };
 
-  const Content = ({ item, key }) => {
+  const Content = ({ item }) => {
     {
       return (
-        <Col
-          xs={12}
-          sm={12}
-          md={8}
-          lg={6}
-          xl={4}
-          style={{ padding: "10px", fontSize: "14px", cursor: "pointer" }}
-          key={key}
-        >
+        <Col xs={12} sm={12} md={8} lg={6} xl={4} style={{ padding: "10px", fontSize: "14px", cursor: "pointer" }}>
           <NavLink to={`/chi-tiet-san-pham/${item._id}`} className="name-product-page navlink">
             <div style={{ height: "207px" }}>
               <img src={item?.image} className="image-product" style={{ width: "90%" }} />
@@ -71,8 +63,8 @@ const ContentProduct = () => {
       <Col xs={24} sm={24} md={24} lg={24} xl={24}>
         <Spin spinning={loading}>
           <Row className="main-product-page-product">
-            {listData?.data?.map((item, key) => {
-              return <Content item={item} key={key} />;
+            {listData?.data?.map((item, index) => {
+              return <Content item={item} key={index} />;
             })}
           </Row>
         </Spin>

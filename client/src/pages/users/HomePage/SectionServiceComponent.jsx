@@ -39,9 +39,9 @@ const SectionServiceComponent = () => {
   ];
   return (
     <Row>
-      {listItem.map((items) => {
+      {listItem.map((items, index) => {
         return (
-          <Col xs={24} sm={12} md={12} lg={6} xl={6} style={{ padding: "0 15px", paddingBottom: "15px" }}>
+          <Col xs={24} sm={12} md={12} lg={6} xl={6} style={{ padding: "0 15px", paddingBottom: "15px" }} key={index}>
             <Row
               style={{
                 border: "1px solid #ededed",

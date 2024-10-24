@@ -2,51 +2,54 @@ import { Button, Checkbox, Col, Row } from "antd";
 import React, { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { listColor, listSize, listType } from "../../../../routes/ListData";
+import { useDispatch } from "react-redux";
+import { filterColorRedux, filterSizeRedux, filterTypeRedux } from "../../../../redux/product.slice";
 
 const TitleContent = ({ title }) => {
   return <div className="title-filter-product">{title}</div>;
 };
 
 const LayoutFilter = () => {
-  const [checkFilter, setCheckFilter] = useState({
-    type: [],
-    color: [],
-    size: [],
-  });
+  const dispatch = useDispatch();
+
   const [checkType, setCheckType] = useState([]);
   const [checkColor, setCheckColor] = useState([]);
   const [checkSize, setCheckSize] = useState([]);
-  const [checked, setChecked] = useState(true);
+  // useEffect(() => {
+  //   dispatch(filterTypeRedux(checkType));
+  //   dispatch(filterSizeRedux(checkSize));
+  //   dispatch(filterColorRedux(checkColor));
+  // }, [checkColor, checkSize, checkType]);
 
-  // console.log("checkFilter", checkFilter);
-  // console.log("checkType", checkType);
-  // console.log("checkColor", checkColor);
-  // console.log("checkSize", checkSize);
-
-  useEffect(() => {
-    setCheckFilter({ ...checkFilter, size: checkSize, color: checkColor, type: checkType });
-  }, [checkColor, checkSize, checkType, checked]);
-
-  const onChangeType = (e) => {
-    setCheckType(e);
-    setChecked(checked);
-  };
-  const onChangeColor = (checkedValues) => {
-    setCheckColor(checkedValues);
-    setChecked(checked);
-  };
-  const onChangeSize = (checkedValues) => {
-    setCheckSize(checkedValues);
-    setChecked(checked);
-  };
-  const handleDeleteAllFilter = () => {
-    setChecked(!checked);
-    setCheckColor([]);
-    setCheckSize([]);
-    setCheckType([]);
+  const onChangeChecked = (type, e) => {
+    if (type === "TYPE") {
+      if (checkType.includes(e.target.value)) {
+        const newChecked = checkType.filter((item) => item !== e.target.value);
+        setCheckType(newChecked);
+      } else {
+        setCheckType([...checkType, e.target.value]);
+      }
+    }
+    if (type === "COLOR") {
+      if (checkColor.includes(e.target.value)) {
+        const newChecked = checkColor.filter((item) => item !== e.target.value);
+        setCheckColor(newChecked);
+      } else {
+        setCheckColor([...checkColor, e.target.value]);
+      }
+    }
+    if (type === "SIZE") {
+      if (checkSize.includes(e.target.value)) {
+        const newChecked = checkSize.filter((item) => item !== e.target.value);
+        setCheckSize(newChecked);
+      } else {
+        setCheckSize([...checkSize, e.target.value]);
+      }
+    }
   };
   const handleDeleteItemFilter = (check, items) => {
     if (check === "TYPE") {
+      console.log("1232", items);
       checkType.splice(checkType.indexOf(items), 1);
       setCheckType([...checkType]);
     }
@@ -59,9 +62,16 @@ const LayoutFilter = () => {
       setCheckSize([...checkSize]);
     }
   };
+  const handleDeleteAllFilter = () => {
+    setCheckType([]);
+    setCheckColor([]);
+    setCheckSize([]);
+  };
 
   const Filter = () => {
-    return (
+    return checkType.length <= 0 && checkColor.length <= 0 && checkSize.length <= 0 ? (
+      ""
+    ) : (
       <div className="content-layout-filter-product">
         <div className="title-filter-product align-items-center">
           <p style={{ color: "#E95221" }}>Bạn chọn</p>
@@ -121,64 +131,74 @@ const LayoutFilter = () => {
 
         <div className="content-layout-filter-product">
           <TitleContent title="Loại Sản phẩm" />
-          <Checkbox.Group
-            style={{
-              width: "100%",
-              display: "grid",
-            }}
-            onChange={onChangeType}
-            checked={false}
+          <div
+          // style={{
+          //   width: "100%",
+          //   display: "grid",
+          // }}
           >
             {listType?.map((items, index) => {
               return (
-                <div style={{ marginBottom: "10px", position: "relative" }} key={index}>
-                  <Checkbox value={items?.id}>{items?.name}</Checkbox>
-                </div>
+                <Checkbox
+                  onChange={(e) => onChangeChecked("TYPE", e)}
+                  value={items?.id}
+                  checked={checkType.includes(items?.id)}
+                  style={{ marginBottom: "10px", position: "relative" }}
+                  key={index}
+                >
+                  {items?.name}
+                </Checkbox>
               );
             })}
-          </Checkbox.Group>
+          </div>
         </div>
 
         <div className="content-layout-filter-product">
           <TitleContent title="Màu sắc" />
-          <Checkbox.Group
-            style={{
-              width: "100%",
-              display: "grid",
-            }}
-            onChange={onChangeColor}
+          <div
+          // style={{
+          //   width: "100%",
+          //   display: "grid",
+          // }}
           >
-            {listColor.map((items, index) => {
+            {listColor?.map((items, index) => {
               return (
-                <div style={{ marginBottom: "10px", position: "relative" }} key={index}>
-                  <Checkbox checked={checked} value={items?.id}>
-                    {items?.name}
-                  </Checkbox>
-                </div>
+                <Checkbox
+                  onChange={(e) => onChangeChecked("COLOR", e)}
+                  value={items?.id}
+                  checked={checkColor.includes(items?.id)}
+                  style={{ marginBottom: "10px", position: "relative" }}
+                  key={index}
+                >
+                  {items?.name}
+                </Checkbox>
               );
             })}
-          </Checkbox.Group>
+          </div>
         </div>
 
         <div className="content-layout-filter-product">
           <TitleContent title="Kích thước" />
-          <Checkbox.Group
-            style={{
-              width: "100%",
-              display: "grid",
-            }}
-            onChange={onChangeSize}
+          <div
+          // style={{
+          //   width: "100%",
+          //   display: "grid",
+          // }}
           >
-            {listSize.map((items, index) => {
+            {listSize?.map((items, index) => {
               return (
-                <div style={{ marginBottom: "10px", position: "relative" }} key={index}>
-                  <Checkbox checked={checked} value={items?.id}>
-                    {items?.name}
-                  </Checkbox>
-                </div>
+                <Checkbox
+                  onChange={(e) => onChangeChecked("SIZE", e)}
+                  value={items?.id}
+                  checked={checkSize.includes(items?.id)}
+                  style={{ marginBottom: "10px", position: "relative" }}
+                  key={index}
+                >
+                  {items?.name}
+                </Checkbox>
               );
             })}
-          </Checkbox.Group>
+          </div>
         </div>
       </Col>
     </Row>

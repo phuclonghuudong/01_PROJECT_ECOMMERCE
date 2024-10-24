@@ -38,6 +38,9 @@ const ContentProduct = ({ id }) => {
           },
         })
       );
+      notification.success({
+        message: "Thêm vào giỏ hàng thành công!",
+      });
     }
   };
 

@@ -86,11 +86,31 @@ const deleteProduct = async (id, data) => {
     };
   }
 };
-const getAllProduct = async (limit, page, sort, filter) => {
+const getAllProduct = async (limit, page, sort, filter, filterTYPE, filterCOLOR, filterSIZE) => {
   try {
     const totalProduct = await Product.countDocuments();
 
-    if (filter) {
+    if (filterTYPE || filterCOLOR || filterSIZE) {
+      console.log("filter", filterTYPE, filterCOLOR, filterSIZE);
+
+      const resultFilter = await Product.find({
+        type: { $regex: filterTYPE },
+        color: { $regex: filterCOLOR },
+        size: { $regex: filterSIZE },
+      });
+
+      return {
+        EC: 0,
+        EM: "SUCCESS",
+        DT: {
+          data: resultFilter,
+          total: resultFilter.length,
+          pageCurrent: Number(page + 1),
+          totalPage: Math.ceil(totalProduct / limit),
+        },
+      };
+    }
+    if (filter && filter[0] === "name") {
       const resultFilter = await Product.find({ [filter[0]]: { $regex: filter[1], $options: "i" } });
 
       return {

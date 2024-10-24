@@ -45,13 +45,16 @@ const updateProduct = async (req, res) => {
 };
 const getAllProduct = async (req, res) => {
   try {
-    const { limit, page, sort, filter } = req.query;
+    const { limit, page, sort, filter, filterTYPE, filterCOLOR, filterSIZE } = req.query;
 
     const result = await ProductServices.getAllProduct(
       Number(!limit ? 8 : limit),
       Number(!page ? 0 : page),
       sort,
-      filter
+      filter,
+      filterTYPE,
+      filterCOLOR,
+      filterSIZE
     );
 
     return res.status(200).json(result);

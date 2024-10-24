@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import TitlePageComponent from "./../../../components/TitlePageComponent/index";
-import { Button, Checkbox, Col, Row } from "antd";
+import { Button, Checkbox, Col, notification, Row } from "antd";
 import GroupQuantity from "./../../../components/GroupQuantity/index";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,8 +45,16 @@ const CartPage = () => {
     }
   };
   const handleClearOrder = () => {
-    if (listChecked?.length > 1) {
+    if (listChecked?.length >= 1) {
       dispatch(removeAllOrderProduct({ listChecked }));
+      notification.success({
+        message: "Bạn xóa thành công sản phẩm ra khỏi giỏ hàng.",
+      });
+    }
+    if (listChecked?.length <= 0) {
+      notification.warning({
+        message: "Bạn chưa chọn!",
+      });
     }
   };
 
@@ -76,7 +84,7 @@ const CartPage = () => {
                   {order?.orderItems?.length > 0 ? `Có ${order?.orderItems?.length} sản phẩm` : "Chưa có sản phẩm nào"}
                 </Col>
 
-                <Col xs={18} sm={18} md={18} lg={20} xl={20}>
+                <Col xs={18} sm={18} md={18} lg={19} xl={19}>
                   <Row style={{ justifyContent: "center", alignItems: "center", display: "flex", textAlign: "center" }}>
                     <Col xs={16} sm={14} md={12} lg={9} xl={9} className="name-product-cart ">
                       Tên sản phẩm - Size - Color
@@ -105,8 +113,8 @@ const CartPage = () => {
                   xs={1}
                   sm={1}
                   md={1}
-                  lg={0}
-                  xl={0}
+                  lg={1}
+                  xl={1}
                   style={{ textAlign: "right", padding: "0", fontSize: "22px", color: "black", cursor: "pointer" }}
                 >
                   <MdDeleteForever onClick={() => handleClearOrder()} />
@@ -162,10 +170,9 @@ const CartPage = () => {
                           <div style={{ padding: "10px" }}>
                             <div style={{ alignItems: "center", display: "flex", justifyContent: "start" }}>
                               <button
-                                // className={items?.amount <= 1 ? "button-quantity-disabled" : "button-quantity"}
-                                className="button-quantity"
+                                className={items?.amount <= 1 ? "button-quantity-disabled" : "button-quantity"}
                                 onClick={() => handleChangeQuantity("DECREASE", items?.product)}
-                                // disabled={items?.amount <= 1 ? true : false}
+                                disabled={items?.amount <= 1 ? true : false}
                               >
                                 -
                               </button>
