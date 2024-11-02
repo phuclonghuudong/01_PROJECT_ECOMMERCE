@@ -70,6 +70,13 @@ const Header = () => {
           <NavLink className="navlink-button-header" to={"/thanh-vien"}>
             <p className="header-button-hover">Trang cá nhân</p>
           </NavLink>
+          {auth?.USER?.isAdmin === true ? (
+            <NavLink className="navlink-button-header" to={"/admin"}>
+              <p className="header-button-hover">Admin</p>
+            </NavLink>
+          ) : (
+            ""
+          )}
           <NavLink className="navlink-button-header" to={"/"} onClick={handleLogout}>
             <p className="header-button-hover">Đăng xuất</p>
           </NavLink>
@@ -152,7 +159,14 @@ const Header = () => {
               <Col xs={8} sm={8} md={8} lg={8} xl={8} className="layout-button-header">
                 <div style={{ textAlign: "center" }}>
                   <Popover content={contentAccount} placement="bottom" trigger="hover">
-                    <FaUserLarge className="button-header" />
+                    {auth?.USER?.avatar && auth?.USER?.avatar.length > 0 ? (
+                      <div className="div-button-header-image">
+                        <img src={auth?.USER?.avatar} className="button-header-image" />
+                      </div>
+                    ) : (
+                      <FaUserLarge className="button-header" />
+                    )}
+
                     <Col xs={0} sm={0} md={0} lg={24} xl={24}>
                       <p className="title-button">Tài khoản</p>
                     </Col>

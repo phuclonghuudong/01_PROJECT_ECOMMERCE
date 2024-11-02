@@ -1,16 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import TitlePageComponent from "./../../../components/TitlePageComponent/index";
 import { Button, Checkbox, Col, notification, Row } from "antd";
-import GroupQuantity from "./../../../components/GroupQuantity/index";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { isValidPrice } from "../../../utils/isValidInput";
 import { MdDeleteForever } from "react-icons/md";
-import { decreaseAmount, increaseAmount, removeOrderProduct, removeAllOrderProduct } from "../../../redux/order.slice";
+import {
+  decreaseAmount,
+  increaseAmount,
+  removeOrderProduct,
+  removeAllOrderProduct,
+  selectedOrder,
+} from "../../../redux/order.slice";
 
 const CartPage = () => {
   const order = useSelector((state) => state.order);
+  const auth = useSelector((state) => state.auth.login);
   const [listChecked, setListChecked] = useState([]);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleDeleteOrderProduct = (idProduct) => {
@@ -25,7 +32,6 @@ const CartPage = () => {
   };
 
   const handleOnChangeCheckedAll = (e) => {
-    console.log("e", e.target.checked);
     if (e.target.checked) {
       const newChecked = [];
       order?.orderItems?.forEach((item) => {
@@ -54,6 +60,44 @@ const CartPage = () => {
     if (listChecked?.length <= 0) {
       notification.warning({
         message: "Bạn chưa chọn!",
+      });
+    }
+  };
+
+  const priceMemo = useMemo(() => {
+    const result = order?.orderItemsSelected?.reduce((total, cur) => {
+      return total + cur.price * cur.amount;
+    }, 0);
+    if (Number(result)) {
+      return result;
+    }
+    return 0;
+  }, [order]);
+  const deliveryPriceMemo = useMemo(() => {
+    if (priceMemo === 0) {
+      return 0;
+    } else if ((priceMemo > 500000) & (priceMemo < 1000000)) {
+      return 20000;
+    } else if (priceMemo > 1000000) {
+      return 10000;
+    } else {
+      return 30000;
+    }
+  }, [priceMemo]);
+  const totalPriceMemo = useMemo(() => {
+    return Number(priceMemo + deliveryPriceMemo);
+  }, [deliveryPriceMemo, priceMemo]);
+
+  useEffect(() => {
+    dispatch(selectedOrder({ listChecked }));
+  }, [listChecked]);
+
+  const handleAddCard = () => {
+    if (order?.orderItemsSelected?.length > 0) {
+      navigate("/payment");
+    } else {
+      notification.warning({
+        message: "Bạn chưa chọn sản phẩm!",
       });
     }
   };
@@ -124,7 +168,6 @@ const CartPage = () => {
               "Chưa có sản phẩm trong giỏ hàng"
             )}
           </div>
-
           <div className="cart-product-body">
             {order?.orderItems?.length > 0 &&
               order?.orderItems?.map((items, index) => {
@@ -150,10 +193,17 @@ const CartPage = () => {
 
                     <Col xs={18} sm={18} md={18} lg={20} xl={20}>
                       <Row
-                        style={{ justifyContent: "center", alignItems: "center", display: "flex", textAlign: "center" }}
+                        style={{
+                          justifyContent: "center",
+                          alignItems: "center",
+                          display: "flex",
+                          textAlign: "center",
+                        }}
                       >
                         <Col xs={24} sm={22} md={22} lg={9} xl={9} className="name-product-cart">
+                          {/* <NavLink to={`/chi-tiet-san-pham/${items.product}`}> */}
                           {items?.name + " - " + items?.size + " - " + items?.color}
+                          {/* </NavLink> */}
                         </Col>
                         <Col
                           xs={24}
@@ -176,19 +226,10 @@ const CartPage = () => {
                               >
                                 -
                               </button>
-                              <input
-                                className={"input-quantity"}
-                                value={items?.amount}
-                                defaultValue={items?.amount}
-                                disabled
-                              />
+                              <input className={"input-quantity"} value={items?.amount} disabled />
                               <button
-                                // className={
-                                //   items?.amount >= items?.amount ? "button-quantity-disabled" : "button-quantity"
-                                // }
                                 className="button-quantity"
                                 onClick={() => handleChangeQuantity("INCREASE", items?.product)}
-                                // disabled={items?.amount >= items?.amount ? true : false}
                               >
                                 +
                               </button>
@@ -239,22 +280,80 @@ const CartPage = () => {
                 );
               })}
           </div>
-          <Row className="cart-footer">
-            <Col xs={12} sm={12} md={12} lg={12} xl={12}>
-              TỔNG TIỀN
+          <Row>
+            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+              <Row className="cart-footer">
+                <Col xs={12} sm={12} md={12} lg={8} xl={6}>
+                  NGƯỜI NHẬN HÀNG
+                </Col>
+                <Col xs={12} sm={12} md={12} lg={16} xl={18}>
+                  <span style={{ color: "blue" }}>{auth?.USER?.username}</span>
+                </Col>
+              </Row>
+              <Row className="cart-footer">
+                <Col xs={12} sm={12} md={12} lg={8} xl={6}>
+                  SỐ ĐIỆN THOẠI
+                </Col>
+                <Col xs={12} sm={12} md={12} lg={16} xl={18}>
+                  <span style={{ color: "blue" }}>{auth?.USER?.phone}</span>
+                </Col>
+              </Row>
+              <Row className="cart-footer">
+                <Col xs={12} sm={12} md={12} lg={8} xl={6}>
+                  ĐỊA CHỈ NHẬN HÀNG
+                </Col>
+                <Col xs={12} sm={12} md={12} lg={16} xl={18}>
+                  <span style={{ color: "blue" }}>{auth?.USER?.address}</span>
+                </Col>
+              </Row>
+              <Row className="cart-footer">
+                <Col xs={12} sm={12} md={12} lg={8} xl={6}></Col>
+                <Col xs={12} sm={12} md={12} lg={16} xl={18}></Col>
+              </Row>
             </Col>
-            <Col xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: "right" }}>
-              <span style={{ color: "red" }}>
-                2.999.000 <span className="text-price-underline">đ</span>
-              </span>
+            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+              <Row className="cart-footer">
+                <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                  TẠM TÍNH
+                </Col>
+                <Col xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: "right" }}>
+                  <span style={{ color: "red" }}>{isValidPrice(priceMemo)}</span>
+                </Col>
+              </Row>
+              <Row className="cart-footer">
+                <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                  GiẢM GIÁ
+                </Col>
+                <Col xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: "right" }}>
+                  <span style={{ color: "red" }}>{0} %</span>
+                </Col>
+              </Row>
+              <Row className="cart-footer">
+                <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                  PHÍ GIAO HÀNG
+                </Col>
+                <Col xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: "right" }}>
+                  <span style={{ color: "red" }}>{isValidPrice(deliveryPriceMemo)}</span>
+                </Col>
+              </Row>
+              <Row className="cart-footer">
+                <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                  TỔNG TIỀN
+                </Col>
+                <Col xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: "right" }}>
+                  <span style={{ color: "red" }}>{isValidPrice(totalPriceMemo)}</span>
+                </Col>
+              </Row>
             </Col>
           </Row>
 
           <NavLink to={"/san-pham"}>
             <Button className="button-submit">Tiếp tục mua hàng</Button>
           </NavLink>
-          <NavLink to={"/san-pham"}>
-            <Button className="button-submit">Mua hàng</Button>
+          <NavLink to={""}>
+            <Button className="button-submit" onClick={handleAddCard}>
+              Mua hàng
+            </Button>
           </NavLink>
         </Col>
       </Row>

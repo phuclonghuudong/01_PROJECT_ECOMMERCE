@@ -17,6 +17,7 @@ const CheckWarrantyPage = React.lazy(() => import("../pages/users/CheckWarrantyP
 const CartPage = React.lazy(() => import("../pages/users/CartPage"));
 const ProductDetail = React.lazy(() => import("../pages/users/ProductDetail"));
 const AccountUpdate = React.lazy(() => import("../pages/users/AccountUpdate"));
+const PaymentPage = React.lazy(() => import("../pages/users/PaymentPage"));
 const NotFound = React.lazy(() => import("../pages/users/NotFound"));
 
 const PublicRoutes = [
@@ -71,6 +72,10 @@ const PublicRoutes = [
       {
         path: "/thanh-vien/thong-tin",
         element: <LoadLazy children={<AccountUpdate />} />,
+      },
+      {
+        path: "/payment",
+        element: <LoadLazy children={<PaymentPage />} />,
       },
     ],
   },

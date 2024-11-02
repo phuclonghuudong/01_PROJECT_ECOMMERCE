@@ -5,7 +5,7 @@ import GroupQuantity from "../../../../components/GroupQuantity";
 import { FaCheckCircle } from "react-icons/fa";
 import ButtonSubmit from "./../../../../components/ButtonSubmit/index";
 import * as ProductServices from "../../../../services/ProductService";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { isValidPrice } from "../../../../utils/isValidInput";
 import { listSize } from "../../../../routes/ListData";
 import { useDispatch, useSelector } from "react-redux";
@@ -151,7 +151,9 @@ const ContentProduct = ({ id }) => {
                     />
                   </div>
                   <Row style={{ margin: "20px 0" }}>
-                    <ButtonSubmit title={"Mua ngay"} bgColor={"#FFB916"} />
+                    <NavLink to={"/gio-hang"}>
+                      <ButtonSubmit title={"Mua ngay"} bgColor={"#FFB916"} />
+                    </NavLink>
                     <ButtonSubmit onClick={handleAddOrder} title={"Thêm vào giỏ hàng"} />
 
                     <ButtonSubmit title={"Thanh toán thẻ"} bgColor={"#288AD6"} />
