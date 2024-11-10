@@ -1,27 +1,48 @@
-import React, { useEffect } from "react";
-import { Button, Col, notification, Table } from "antd";
+import React, { useEffect, useState } from "react";
+import { Button, Col, notification, Spin, Table } from "antd";
 import { Row } from "antd";
 import { PiPhoneCallFill } from "react-icons/pi";
 import { FaUserAlt, FaMailchimp, FaMapMarkerAlt } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import * as OrderService from "../../../services/OrderService";
+import { isValidDate, isValidPrice } from "../../../utils/isValidInput";
+import { format } from "date-fns";
 
 const columns = [
   {
-    title: "Đơn hàng",
-    dataIndex: "order",
+    title: "STT",
+    dataIndex: "key",
   },
   {
-    title: "Ngày",
-    dataIndex: "date",
+    title: "Người mua",
+    dataIndex: "shippingAddress",
+    render: (item) => item.fullname,
+  },
+  {
+    title: "Ngày mua",
+    dataIndex: "createdAt",
+    render: (item) => format(item, "dd/MM/yyyy"),
   },
   {
     title: "Địa chỉ",
-    dataIndex: "address",
+    dataIndex: "shippingAddress",
+    render: (item) => item.address,
+  },
+  {
+    title: "SĐT",
+    dataIndex: "shippingAddress",
+    render: (item) => "0" + item.phone,
+  },
+  {
+    title: "Số lượng",
+    dataIndex: "orderItems",
+    render: (item) => item?.length + " Sản phẩm",
   },
   {
     title: "Giá trị",
-    dataIndex: "value",
+    dataIndex: "totalPrice",
+    render: (price) => (price ? isValidPrice(price) : "Giá rỗng"),
   },
   {
     title: "Tình trạng",
@@ -32,7 +53,12 @@ const columns = [
 const AccountPage = () => {
   const auth = useSelector((state) => state.auth.login);
   const navigate = useNavigate();
+  const [listOrder, setListOrder] = useState([]);
+  const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    fetchDataOrder();
+  }, []);
   useEffect(() => {
     if (!auth?.USER) {
       notification.warning({
@@ -40,7 +66,23 @@ const AccountPage = () => {
       });
       navigate("/dang-nhap");
     }
-  }, [auth]);
+  }, [auth?.USER]);
+
+  const fetchDataOrder = async () => {
+    setLoading(true);
+    const result = await OrderService.getOrderByUser(auth?.ACCESS_TOKEN, auth?.USER?._id);
+    if (result?.EC === 0) {
+      setListOrder(result?.DT);
+    } else {
+      console.log(result?.EM);
+    }
+    setLoading(false);
+  };
+  const dataTable =
+    listOrder?.length &&
+    listOrder?.map((item, key) => {
+      return { ...item, key: key + 1 };
+    });
 
   return (
     <div style={{ margin: "10px 10px 30px 10px" }}>
@@ -93,7 +135,9 @@ const AccountPage = () => {
         </Col>
         <Col xs={24} sm={24} md={18} lg={18} xl={18}>
           <div className="title-content-page-account">Đơn hàng của bạn</div>
-          <Table columns={columns} dataSource={""} size="small" />
+          <Spin spinning={loading}>
+            <Table columns={columns} dataSource={dataTable} size="small" />
+          </Spin>
         </Col>
       </Row>
     </div>

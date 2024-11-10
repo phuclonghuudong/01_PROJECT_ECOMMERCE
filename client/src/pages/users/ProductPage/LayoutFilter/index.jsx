@@ -49,7 +49,6 @@ const LayoutFilter = () => {
   };
   const handleDeleteItemFilter = (check, items) => {
     if (check === "TYPE") {
-      console.log("1232", items);
       checkType.splice(checkType.indexOf(items), 1);
       setCheckType([...checkType]);
     }

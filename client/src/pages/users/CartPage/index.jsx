@@ -12,6 +12,26 @@ import {
   removeAllOrderProduct,
   selectedOrder,
 } from "../../../redux/order.slice";
+import StepComponent from "../../../components/StepComponent";
+
+const steps = [
+  {
+    title: "30.000 VNĐ",
+    description: "Dưới 500.000 VNĐ",
+  },
+  {
+    title: "20.000 VNĐ",
+    description: "Từ 500.000 - 1.000.000 VNĐ",
+  },
+  {
+    title: "10.000 VNĐ",
+    description: "Từ 1 - 2.000.000 VNĐ",
+  },
+  {
+    title: "0 VNĐ",
+    description: "Trên 2.000.000 VNĐ",
+  },
+];
 
 const CartPage = () => {
   const order = useSelector((state) => state.order);
@@ -76,10 +96,12 @@ const CartPage = () => {
   const deliveryPriceMemo = useMemo(() => {
     if (priceMemo === 0) {
       return 0;
-    } else if ((priceMemo > 500000) & (priceMemo < 1000000)) {
+    } else if (priceMemo > 500000 && priceMemo < 1000000 && order?.orderItemsSelected?.length > 0) {
       return 20000;
-    } else if (priceMemo > 1000000) {
+    } else if (priceMemo > 1000000 && priceMemo < 2000000 && order?.orderItemsSelected?.length > 0) {
       return 10000;
+    } else if (priceMemo > 2000000 && order?.orderItemsSelected?.length > 0) {
+      return 0;
     } else {
       return 30000;
     }
@@ -109,6 +131,18 @@ const CartPage = () => {
       <Row style={{ padding: "10px", height: "100%" }}>
         <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{ padding: "10px" }}>
           <div className="title-cart">Giỏ hàng của bạn</div>
+          <StepComponent
+            items={steps}
+            current={
+              deliveryPriceMemo === 0 && order?.orderItemsSelected?.length > 0
+                ? 3
+                : deliveryPriceMemo === 10000
+                ? 2
+                : deliveryPriceMemo === 20000
+                ? 1
+                : 0
+            }
+          />
           <div className="title-cart-child">
             {order?.orderItems?.length > 0 ? (
               <Row className="cart-product" style={{ border: "none" }}>

@@ -1,20 +1,23 @@
 import React, { useMemo, useState } from "react";
-import { Button, Col, notification, Radio, Row } from "antd";
+import { Button, Col, notification, Radio, Row, Spin } from "antd";
 import { useSelector } from "react-redux";
 import { isValidEmail, isValidPhone, isValidPrice } from "../../../utils/isValidInput";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { BsBank2 } from "react-icons/bs";
 import TitlePageComponent from "./../../../components/TitlePageComponent/index";
 import GroupInput from "../../../components/GroupInput";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import * as OrderService from "../../../services/OrderService";
 
 const PaymentPage = () => {
   const order = useSelector((state) => state.order);
   const auth = useSelector((state) => state.auth.login);
+  const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(false);
   const [valueRadio, setValueRadio] = useState(1);
   const [valueInput, setValueInput] = useState({
-    username: auth?.USER?.username,
+    fullname: auth?.USER?.username,
     phone: auth?.USER?.phone,
     address: auth?.USER?.address,
     email: auth?.USER?.email,
@@ -49,7 +52,7 @@ const PaymentPage = () => {
     setValueRadio(e.target.value);
   };
   const checkValidInput = () => {
-    if (!valueInput.username) {
+    if (!valueInput.fullname) {
       notification.error({
         message: "Người nhận hàng chưa có!",
       });
@@ -80,21 +83,43 @@ const PaymentPage = () => {
       });
       return false;
     }
-    const checkPhone = isValidPhone(valueInput?.phone);
-    if (checkPhone === false) {
-      notification.error({
-        message: "Số điện thoại chưa đúng định dạng!",
-      });
-      return false;
-    }
+    // const checkPhone = isValidPhone(valueInput?.phone);
+    // if (checkPhone === false) {
+    //   notification.error({
+    //     message: "Số điện thoại chưa đúng định dạng!",
+    //   });
+    //   return false;
+    // }
     return true;
   };
-  const handlePurchase = () => {
+  const handlePurchase = async () => {
+    const data = {
+      fullname: valueInput?.fullname,
+      address: valueInput?.address,
+      phone: valueInput?.phone,
+      paymentMethod: valueRadio && valueRadio === 1 ? "COD" : "PANK",
+      orderItems: order?.orderItemsSelected,
+      shippingPrice: deliveryPriceMemo ? deliveryPriceMemo : 0,
+      itemsPrice: priceMemo ? priceMemo : 0,
+      totalPrice: totalPriceMemo,
+      userId: auth?.USER?._id,
+    };
     const check = checkValidInput();
     if (check === true) {
-      console.log(valueInput);
-      console.log(valueRadio);
+      setLoading(true);
+      const result = await OrderService.create(data, auth?.ACCESS_TOKEN);
+      if (result?.EC === 0) {
+        notification.success({
+          message: result?.EM,
+        });
+        navigate("/thanh-vien");
+      } else {
+        notification.error({
+          message: result?.EM,
+        });
+      }
     }
+    setLoading(false);
   };
 
   return (
@@ -110,9 +135,9 @@ const PaymentPage = () => {
                 <GroupInput
                   name={"username"}
                   label="Họ và tên người nhận hàng"
-                  onChange={(e) => setValueInput({ ...valueInput, username: e.target.value })}
-                  fail={!valueInput.username ? false : true}
-                  value={valueInput.username}
+                  onChange={(e) => setValueInput({ ...valueInput, fullname: e.target.value })}
+                  fail={!valueInput.fullname ? false : true}
+                  value={valueInput.fullname}
                 />
                 <GroupInput
                   name={"phone"}
@@ -177,7 +202,7 @@ const PaymentPage = () => {
                     <img src={items?.image} style={{ width: "100%", height: "80%", objectFit: "scale-down" }} />
                   </Col>
                   <Col xs={12} sm={12} md={12} lg={16} xl={16} style={{ alignContent: "center", padding: "10px" }}>
-                    {items?.name} - {items?.color} - {items?.size}
+                    {items?.name} - {items?.color} - {items?.size} - Số lượng: {items?.amount}
                   </Col>
                   <Col xs={6} sm={6} md={6} lg={4} xl={4} style={{ alignContent: "center" }}>
                     {isValidPrice(items?.price)}
@@ -211,12 +236,14 @@ const PaymentPage = () => {
               {isValidPrice(totalPriceMemo)}
             </Col>
           </Row>
-          <NavLink to={"/gio-hang"}>
-            <Button className="button-submit">Sửa giỏ hàng</Button>
-          </NavLink>
-          <Button className="button-submit" onClick={handlePurchase}>
-            Mua hàng
-          </Button>
+          <Spin spinning={loading}>
+            <NavLink to={"/gio-hang"}>
+              <Button className="button-submit">Sửa giỏ hàng</Button>
+            </NavLink>
+            <Button className="button-submit" onClick={handlePurchase}>
+              Mua hàng
+            </Button>
+          </Spin>
         </Col>
       </Row>
     </div>

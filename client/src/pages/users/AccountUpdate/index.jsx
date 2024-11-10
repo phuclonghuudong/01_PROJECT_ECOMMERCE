@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, notification, Row } from "antd";
+import { Button, Col, Form, notification, Row, Spin } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
 import LabelInput from "../../../components/LabelInput";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 import FormComponent from "../../../components/FormComponent";
+import LabelImage from "./../../../components/LabelImage/index";
+import { getBase64 } from "../../../utils/isValidInput";
+import * as UserServices from "../../../services/UserService";
+import { loginRedux } from "../../../redux/auth.slice";
 
 const validateMessages = {
   required: "${name} is required!",
@@ -47,7 +51,17 @@ const formItemLayout = {
 const AccountUpdate = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth.login);
+  const [avatar, setAvatar] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (auth?.USER) {
+      form.setFieldsValue(auth?.USER);
+      setAvatar(auth?.USER?.avatar);
+    }
+  }, [auth?.USER]);
 
   useEffect(() => {
     if (!auth?.USER) {
@@ -58,16 +72,44 @@ const AccountUpdate = () => {
     }
   }, []);
 
-  const onFinish = (values) => {
-    console.log("Success:12312", values);
+  const handleGetDetailUser = async () => {
+    const result = await UserServices.getDetailUser(auth?.USER?._id, auth?.ACCESS_TOKEN);
+    dispatch(loginRedux({ USER: result?.data?.DT, ACCESS_TOKEN: auth?.ACCESS_TOKEN }));
   };
 
+  const fetchUpdateAccount = async (values) => {
+    values.avatar = avatar;
+    setLoading(true);
+    const result = await UserServices.updateUser(auth?.USER?._id, values, auth?.ACCESS_TOKEN);
+    if (result?.EC === 0) {
+      notification.success({
+        message: result?.EM,
+      });
+      handleGetDetailUser();
+      navigate("/thanh-vien");
+    } else {
+      notification.error({
+        message: result?.EM,
+      });
+    }
+    setLoading(false);
+  };
+  const onFinish = (values) => {
+    fetchUpdateAccount(values);
+  };
   const onFinishFailed = (errorInfo) => {
     if (errorInfo) {
       notification.error({
         message: "Vui lòng điền đầy đủ thông tin!",
       });
     }
+  };
+  const handleOnchangeAvatar = async ({ fileList }) => {
+    const file = fileList[0];
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setAvatar(file.preview);
   };
 
   return (
@@ -80,41 +122,45 @@ const AccountUpdate = () => {
 
         <div style={{ margin: "10px" }}>
           <div className="title-page-account">Thông tin tài khoản</div>
-          <FormComponent
-            {...formItemLayout}
-            form={form}
-            name="UPDATE USER"
-            validateMessages={validateMessages}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-            initialValues={auth?.USER}
-          >
-            <LabelInput label={"Email"} name={"email"} message={"Please input!"} placeholder={"Email"} />
-
-            <LabelInput label={"Username"} name={"username"} message={"Please input!"} placeholder={"Username"} />
-            <LabelInput
-              label={"Phone"}
-              name={"phone"}
-              message={"Please input!"}
-              typeNumber
-              type={"number"}
-              placeholder={"Phone"}
-            />
-            <LabelInput label={"Address"} name={"address"} message={"Please input!"} placeholder={"Address"} />
-
-            <Form.Item
-              wrapperCol={{
-                offset: 8,
-                span: 16,
-              }}
+          <Spin spinning={loading}>
+            <FormComponent
+              {...formItemLayout}
+              form={form}
+              name="UPDATE USER"
+              validateMessages={validateMessages}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
+              initialValues={auth?.USER}
             >
-              <Button type="primary" className="button-submit" htmlType="submit">
-                Cập nhật
-              </Button>
-            </Form.Item>
-          </FormComponent>
+              <LabelInput label={"Email"} name={"email"} message={"Please input!"} placeholder={"Email"} disabled />
+
+              <LabelInput label={"Username"} name={"username"} message={"Please input!"} placeholder={"Username"} />
+              <LabelInput
+                label={"Phone"}
+                name={"phone"}
+                message={"Please input!"}
+                // typeNumber
+                // type={"number"}
+                placeholder={"Phone"}
+              />
+              <LabelInput label={"Address"} name={"address"} message={"Please input!"} placeholder={"Address"} />
+              <LabelImage name={"avatar"} onChange={handleOnchangeAvatar} avatar={avatar} />
+
+              <Form.Item
+                wrapperCol={{
+                  offset: 8,
+                  span: 16,
+                }}
+              >
+                <Button type="primary" className="button-submit" htmlType="submit">
+                  Cập nhật
+                </Button>
+              </Form.Item>
+            </FormComponent>
+          </Spin>
         </div>
+
         <div style={{ margin: "10px" }}>
           <div className="title-page-account">Đổi mật khẩu</div>
           <Form

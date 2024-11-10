@@ -99,6 +99,7 @@ const refreshToken = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
+    console.log("req.params.id", req.params.id, "req.body", req.body);
     const userId = req.params.id;
     const data = req.body;
     if (!userId) {

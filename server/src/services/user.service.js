@@ -88,6 +88,13 @@ const registerUser = async (data) => {
       avatar: "",
       isAdmin: false,
     });
+    // if (result?._id) {
+    //   await User.updateOne(
+    //     { _id: result?._id },
+    //     { phone: { $type: "number" } },
+    //     { $set: { phone: { $concat: ["0", { $toString: `${result?.phone}` }] } } }
+    //   );
+    // }
     return {
       EC: 0,
       EM: "CREATE SUCCESS",
@@ -104,7 +111,6 @@ const registerUser = async (data) => {
 const updateUser = async (id, data) => {
   try {
     const checkUser = await User.findOne({ _id: id });
-    console.log("object", id);
     if (checkUser === null) {
       return {
         EC: "ERR",

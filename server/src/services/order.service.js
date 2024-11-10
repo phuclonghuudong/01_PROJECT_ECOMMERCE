@@ -1,32 +1,50 @@
 const Order = require("../models/order.model");
 
-const create = async (data, accessToken) => {
-  const { id, name, image, type, color, size, countInStock, price, rating, description } = data;
-
+const create = async (data) => {
+  // const { paymentMethod, itemsPrice, shippingPrice, taxPrice, totalPrice, fullname, address, phone } = data;
+  // console.log(data);
   try {
-    const checkProduct = await Order.findOne({ id: id });
-    if (checkProduct !== null) {
-      return {
-        EC: "ERR",
-        EM: "The product is already!",
-        DT: "",
-      };
-    }
+    // const checkProduct = await Order.findOne({ id: data?.product });
+    // if (checkProduct !== null) {
+    //   return {
+    //     EC: "ERR",
+    //     EM: "The product is already!",
+    //     DT: "",
+    //   };
+    // }
     const result = await Order.create({
-      id: id,
-      name: name,
-      image: image,
-      type: type,
-      color: color,
-      size: size,
-      countInStock: countInStock,
-      price: price,
-      rating: rating,
-      description: description,
+      orderItems: data?.orderItems,
+      shippingAddress: {
+        fullname: data?.fullname,
+        address: data?.address,
+        phone: data?.phone,
+      },
+      paymentMethod: data?.paymentMethod,
+      itemsPrice: data?.itemsPrice,
+      shippingPrice: data?.shippingPrice,
+      totalPrice: data?.totalPrice,
+      user: data?.userId,
     });
+
     return {
       EC: 0,
-      EM: "CREATE SUCCESS",
+      EM: "Chúc mừng. Bạn đã mua hàng thành công!",
+      DT: result,
+    };
+  } catch (error) {
+    return {
+      EC: "ERR",
+      EM: error,
+      DT: "",
+    };
+  }
+};
+const getOrderByUser = async (id) => {
+  try {
+    const result = await Order.find({ user: id }).sort({ createdAt: -1 });
+    return {
+      EC: 0,
+      EM: "SUCCESS",
       DT: result,
     };
   } catch (error) {
@@ -40,4 +58,5 @@ const create = async (data, accessToken) => {
 
 module.exports = {
   create,
+  getOrderByUser,
 };

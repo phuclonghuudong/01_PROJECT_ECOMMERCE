@@ -23,6 +23,14 @@ export const registerUser = async (data) => {
   const URL_API = "/v1/api/user/register";
   return await axios.post(URL_API, data);
 };
+export const updateUser = async (id, data, token) => {
+  const URL_API = `/v1/api/user/update/${id}`;
+  return await axios.post(URL_API, data, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  });
+};
 export const logoutUser = async () => {
   const URL_API = "/v1/api/user/logout";
   return await axios.get(URL_API);
